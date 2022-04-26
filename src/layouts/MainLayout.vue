@@ -23,7 +23,6 @@
       v-model="leftDrawerOpen"
       bordered
       side="right"
-
     >
       <q-list>
         <q-item-label header>
@@ -36,7 +35,6 @@
         >
           <q-item-section @click="changeLanguageFn(l)">
             <q-item-label>{{ l.title }}</q-item-label>
-            <q-item-label caption>{{ l.title }}</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -79,7 +77,7 @@ export default defineComponent({
 
   watch: {
     // whenever question changes, this function will run
-    leftDrawerOpen(newVal, oldVal) {
+    leftDrawerOpen(newVal) {
       if (newVal === true) {
         scroll_to_results()
       }
@@ -94,6 +92,8 @@ export default defineComponent({
       {key: 'sv_SE', title: 'Svenska', moment_key: 'sv', file: 'sv'},
       {key: 'fi_FI', title: 'Suomeksi', moment_key: 'fi', file: 'fi'},
       {key: 'en_GB', title: 'English', moment_key: 'en', file: 'en-GB'},
+      {key: 'de_DE', title: 'Deutsch', moment_key: 'de', file: 'sv'},
+
     ]
     return {
       languages,
