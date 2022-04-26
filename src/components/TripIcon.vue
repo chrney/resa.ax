@@ -1,12 +1,12 @@
 <template>
-  <q-icon :name="$mode_to_icon(mode)"/>
+  <q-icon :name="$mode_to_icon(mode)" />
 </template>
 
 <script>
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "TripIcon",
-  props: ['mode'],
+  props: ["mode"],
 });
 </script>

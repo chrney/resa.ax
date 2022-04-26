@@ -1,17 +1,15 @@
 <template>
   <div class="with-bg">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "App",
-  setup: function () {
-
-  }
+  setup: function () {},
 });
 </script>
 
@@ -22,7 +20,5 @@ body {
   background-position: center;
   background-size: auto;
   background-attachment: fixed;
-
-
 }
 </style>
