@@ -18,7 +18,7 @@
     @update:model-value="updateFn"
   >
     <template v-slot:prepend>
-      <q-icon :name="icon"/>
+      <q-icon :name="icon" />
     </template>
     <template v-slot:no-option>
       <q-item>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import {defineComponent, ref} from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "DropdownPicker",

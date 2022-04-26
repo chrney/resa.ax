@@ -21,11 +21,11 @@
               <a
                 class="cursor-pointer"
                 @click="getPatternFn(schedule.pattern.id)"
-              >Visa färdplan</a
+                >Visa färdplan</a
               >
             </li>
             <li v-for="(t, t_idx) in schedule.times" v-bind:key="t_idx">
-              <q-icon name="schedule"/>
+              <q-icon name="schedule" />
               {{
                 $moment(
                   t.serviceDay * 1000 + t.scheduledDeparture * 1000
@@ -55,11 +55,11 @@
 </template>
 
 <script>
-import {defineComponent, ref} from "vue";
-import {api} from "boot/axios";
+import { defineComponent, ref } from "vue";
+import { api } from "boot/axios";
 
-import {useRoute} from "vue-router";
-import {formatTS} from "boot/generic";
+import { useRoute } from "vue-router";
+import { formatTS } from "boot/generic";
 
 export default defineComponent({
   components: {},
