@@ -3,8 +3,8 @@
     <q-banner class="text-black bg-info">
       <q-icon color="primary" name="search" />
       <template v-if="$q.screen.lt.md"
-        >{{ $t("results.nothing_searched_yet_above") }}.</template
-      >
+        >{{ $t("results.nothing_searched_yet_above") }}.
+      </template>
       <template v-else>{{ $t("results.nothing_searched_yet_left") }}</template>
     </q-banner>
   </template>

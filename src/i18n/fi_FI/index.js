@@ -41,4 +41,7 @@ export default {
     passing: "Ohittaa",
     stops_plural: "pysäkki|pysäkkiä",
   },
+  map: {
+    show: "Näytä kartalla",
+  },
 };

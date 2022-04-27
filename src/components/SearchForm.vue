@@ -6,7 +6,6 @@
     icon="start"
     @stopChosen="stopChosenFn"
   />
-
   <dropdown-picker
     :data="allStops"
     :label="$t('search.label_to')"
@@ -81,7 +80,7 @@
   </div>
 
   <q-btn
-    :disable="!(point.to && point.to.id && point.from && point.from.id)"
+    :disable="!(point.to && point.to.gtfsId && point.from && point.from.gtfsId)"
     :label="$t('search.btn_search')"
     class="full-width"
     color="primary"
@@ -101,6 +100,7 @@ import { formatTS, get_mode_class, scroll_to_results } from "boot/generic";
 import { api } from "boot/axios";
 import moment from "moment";
 import DropdownPicker from "components/DropdownPicker";
+import { all_stations, plan_transit_walk } from "boot/queries";
 
 export default defineComponent({
   name: "SearchForm",
@@ -108,9 +108,8 @@ export default defineComponent({
   emits: ["foundTrips", "searchState", "searchDate"],
 
   setup: (_, { emit }) => {
-    const options = ref([]);
     const point = ref({});
-    let all_stops = [];
+    const allStops = ref([]);
     const mode = ref("now");
     const dateModel = ref(formatTS(Date.now(), "YYYY-MM-DD"));
     const timeModel = ref(formatTS(Date.now(), "HH:mm"));
@@ -119,33 +118,37 @@ export default defineComponent({
       point.value[data.direction] = data.stop;
     };
 
-    api.get("index/stops").then((response) => {
-      let stationIds = {};
-      let favorites = [
-        "AX:9021302000118000",
-        "AX:9021302000289000",
-        "AX:9021302000308000",
-        "AX:9021302000429000",
-        "AX:9021302000075000",
-        "AX:9021302001004000",
-        "AX:9021302000178000",
-        "AX:9021302001023000",
-      ];
-      response.data.forEach((stop) => {
-        if (!stationIds[stop.stationId]) {
-          stop.favorite = favorites.includes(stop.stationId);
-          all_stops.push(stop);
-        }
-        stationIds[stop.stationId] = true;
+    api
+      .post("index/graphql", {
+        query: all_stations,
+      })
+      .then((response) => {
+        let favorites = [
+          "AX:9021302000118000",
+          "AX:9021302000289000",
+          "AX:9021302000308000",
+          "AX:9021302000429000",
+          "AX:9021302000075000",
+          "AX:9021302001004000",
+          "AX:9021302000178000",
+          "AX:9021302001023000",
+        ];
+        allStops.value = response.data.data.stations
+          .map((station) => {
+            station.favorite = favorites.includes(station.gtfsId);
+            return station;
+          })
+          .sort((a, b) => a.name.localeCompare(b.name));
       });
-
-      all_stops.sort((a, b) => a.name.localeCompare(b.name));
-    });
 
     const extend_trip = (item) => {
       const now = moment(new Date());
 
       item.diff = moment.duration(moment(item.startTime).diff(now));
+
+      item.unique_id =
+        "id_" +
+        (Date.now().toString(36) + Math.random().toString(36).substr(2));
 
       item.duration = moment.duration(
         moment(item.endTime).diff(item.startTime)
@@ -163,6 +166,9 @@ export default defineComponent({
       }
 
       item.duration = duration_str.join(" ");
+
+      item.from = item.legs[0].from;
+      item.to = item.legs[item.legs.length - 1].to;
 
       item.graph = [];
       let total_length =
@@ -213,49 +219,53 @@ export default defineComponent({
 
     const find_trips = async () => {
       let found_trips = [];
-      const params = {
-        fromPlace: [point.value.from.stationId].join(","),
-        toPlace: [point.value.to.stationId].join(","),
-        mode: ["TRANSIT", "WALK"].join(","),
-        maxWalkDistance: 100,
-        arriveBy: false,
-        wheelchair: false,
-        showIntermediateStops: true,
-        debugItineraryFilter: false,
-        locale: "sv",
-      };
-
-      if (mode.value !== "now") {
-        params.date = dateModel.value;
-        params.time = timeModel.value;
-        params.arriveBy = mode.value === "arrival";
-      }
-
       let is_done = false;
       let try_counter = 0;
 
-      while (!is_done) {
-        await api.get("plan", { params }).then((response) => {
-          if (response.data.plan && response.data.plan.itineraries) {
-            const new_trips = response.data.plan.itineraries.map((item) =>
-              extend_trip(item)
-            );
-            found_trips = [...found_trips, ...new_trips];
-          }
-          let next_page_found = false;
-          if (response.data.nextPageCursor && !params.arriveBy) {
-            params.pageCursor = response.data.nextPageCursor;
-            next_page_found = true;
-          }
-          if (response.data.previousPageCursor && params.arriveBy) {
-            params.pageCursor = response.data.previousPageCursor;
-            next_page_found = true;
-          }
-          try_counter++;
-          is_done =
-            found_trips.length >= 8 || try_counter >= 10 || !next_page_found;
-        });
+      const plan_params = {
+        fromPlace: point.value.from.gtfsId,
+        toPlace: point.value.to.gtfsId,
+        date: "",
+        time: "",
+        arriveBy: false,
+        locale: "sv",
+        pageCursor: "",
+      };
+      if (mode.value !== "now") {
+        plan_params.date = dateModel.value;
+        plan_params.time = timeModel.value;
+        plan_params.arriveBy = mode.value === "arrival";
       }
+
+      while (!is_done) {
+        await api
+          .post("index/graphql", {
+            query: plan_transit_walk,
+            variables: plan_params,
+          })
+          .then((response) => {
+            let data = response.data.data.plan;
+            if (data && data.itineraries) {
+              const new_trips = data.itineraries.map((item) =>
+                extend_trip(item)
+              );
+              found_trips = [...found_trips, ...new_trips];
+            }
+            let next_page_found = false;
+            if (data.nextPageCursor && !plan_params.arriveBy) {
+              plan_params.pageCursor = data.nextPageCursor;
+              next_page_found = true;
+            }
+            if (data.previousPageCursor && plan_params.arriveBy) {
+              params.pageCursor = data.previousPageCursor;
+              next_page_found = true;
+            }
+            try_counter++;
+            is_done =
+              found_trips.length >= 8 || try_counter >= 10 || !next_page_found;
+          });
+      }
+
       return {
         found_trips,
         search_date: dateModel.value,
@@ -273,7 +283,7 @@ export default defineComponent({
     };
 
     return {
-      allStops: ref(all_stops),
+      allStops,
       searchFn,
       stopChosenFn,
       point,

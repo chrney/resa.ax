@@ -1,8 +1,8 @@
 export default {
   search: {
     btn_search: "Sök",
-    label_from: "Från -- hållplats, adress eller plats",
-    label_to: "Till -- hållplats, adress eller plats",
+    label_from: "Från -- sök efter hållplatsens namn eller välj från listan",
+    label_to: "Till -- sök efter hållplatsens namn eller välj från listan",
     btn_now: "Nu",
     btn_departure: "Avgång kl.",
     btn_arrival: "Ankomst kl.",
@@ -41,5 +41,8 @@ export default {
   expanded: {
     passing: "Passerar",
     stops_plural: "hållplats | hållplatser",
+  },
+  map: {
+    show: "Visa på kartan",
   },
 };

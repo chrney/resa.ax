@@ -1,8 +1,10 @@
 export default {
   search: {
     btn_search: "Suchen",
-    label_from: "Abfahrt -- Haltestelle oder Adresse",
-    label_to: "Ankunft -- Haltestelle oder Adresse",
+    label_from:
+      "Abfahrt -- geben Sie den Namen einer Haltetelle ein oder wählen Sie aus der Liste",
+    label_to:
+      "Ankunft -- geben Sie den Namen einer Haltetelle ein oder wählen Sie aus der Liste",
     btn_now: "Jetzt",
     btn_departure: "Abfahrt um...",
     btn_arrival: "Ankunft um...",
@@ -43,5 +45,8 @@ export default {
   expanded: {
     passing: "Fährt vorbei an",
     stops_plural: "Haltestelle | Haltestellen",
+  },
+  map: {
+    show: "Karte anzeigen",
   },
 };

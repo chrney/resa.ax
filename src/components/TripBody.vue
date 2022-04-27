@@ -1,5 +1,7 @@
 <template>
   <div class="q-px-lg q-pb-md">
+    <trip-map :item="item" />
+
     <q-timeline
       v-for="(leg, idx) in item.graph"
       v-bind:key="idx"
@@ -17,7 +19,7 @@
               $t("body.distance_towards", {
                 distance: $get_distance_string(leg.distance),
                 name: leg.to.name,
-                bus_stop: leg.from.stopId.slice(-1),
+                bus_stop: leg.from.stop.gtfsId.slice(-1),
               })
             }}
           </q-timeline-entry>
@@ -28,7 +30,7 @@
             :subtitle="$formatTS(leg.startTime, 'HH:mm')"
             :title="leg.from.name"
             class="no-walk-mode"
-            >{{ $t("body.stop") }} {{ leg.from.stopId.slice(-1) }}
+            >{{ $t("body.stop") }} {{ leg.from.stop.gtfsId.slice(-1) }}
           </q-timeline-entry>
 
           <!-- travel mode -->
@@ -39,8 +41,8 @@
           >
             <template v-slot>
               {{ $t("body.line") }}
-              <q-chip>{{ leg.routeShortName }}</q-chip>
-              ({{ leg.route }})
+              <q-chip>{{ leg.route.shortName }}</q-chip>
+              ({{ leg.route.longName }})
               <trip-body-expanded :leg="leg" />
             </template>
           </q-timeline-entry>
@@ -53,7 +55,7 @@
             class="no-walk-mode"
           >
             <template v-if="leg.from.name === leg.to.name">
-              {{ $t("body.stop") }} {{ leg.to.stopId.slice(-1) }}
+              {{ $t("body.stop") }} {{ leg.to.stop.gtfsId.slice(-1) }}
             </template>
           </q-timeline-entry>
         </template>
@@ -76,12 +78,14 @@
 <script>
 import { defineComponent } from "vue";
 import TripBodyExpanded from "components/TripBodyExpanded.vue";
+import TripMap from "components/TripMap";
 
 export default defineComponent({
   name: "TripBody",
   props: ["item"],
   components: {
     TripBodyExpanded,
+    TripMap,
   },
 });
 </script>

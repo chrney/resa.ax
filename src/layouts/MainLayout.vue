@@ -4,13 +4,13 @@
       <q-toolbar>
         <q-toolbar-title> Ålandstrafikens reseplanerare</q-toolbar-title>
 
-        <q-separator/>
+        <q-separator />
         <span class="text-grey-4 q-mr-md">v1.0b</span>
         <q-btn
           aria-label="Menu"
           dense
           flat
-          icon="more_vert"
+          icon="language"
           round
           @click="toggleLeftDrawer"
         />
@@ -36,20 +36,20 @@
 
     <q-page-container class="page-centered">
       <div class="q-pa-md">
-        <router-view/>
+        <router-view />
       </div>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-import {defineComponent, ref} from "vue";
+import { defineComponent, ref } from "vue";
 
-import {scroll} from "quasar";
-import {moment, scroll_to_results} from "boot/generic";
-import {languages} from "boot/i18n";
+import { scroll } from "quasar";
+import { moment, scroll_to_results } from "boot/generic";
+import { languages } from "boot/i18n";
 
-const {getScrollTarget, setVerticalScrollPosition} = scroll;
+const { getScrollTarget, setVerticalScrollPosition } = scroll;
 
 export default defineComponent({
   name: "MainLayout",

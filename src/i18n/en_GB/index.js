@@ -1,8 +1,8 @@
 export default {
   search: {
     btn_search: "Search",
-    label_from: "From where would you like to travel?",
-    label_to: "Where would you like to go?",
+    label_from: "From -- enter a stop's name or pick one from the list",
+    label_to: "To -- enter a stop's name or pick one from the list",
     btn_now: "Now",
     btn_departure: "Departure at...",
     btn_arrival: "Arrival at...",
@@ -40,5 +40,8 @@ export default {
   expanded: {
     passing: "Passing",
     stops_plural: "stop|stops",
+  },
+  map: {
+    show: "Show map",
   },
 };
