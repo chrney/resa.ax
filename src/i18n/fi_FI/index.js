@@ -1,8 +1,8 @@
 export default {
   search: {
     btn_search: "Etsi",
-    label_from: "Mistä -- pysäkki, osoite tai paikka",
-    label_to: "Mihin -- pysäkki, osoite tai paikka",
+    label_from: "Mistä -- syötä pysäkin nimi tai valitse listasta",
+    label_to: "Mihin -- syötä pysäkin nimi tai valitse listasta",
     btn_now: "Nyt",
     btn_departure: "Lähtö klo.",
     btn_arrival: "Perillä klo.",
