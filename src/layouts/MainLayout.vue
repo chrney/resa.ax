@@ -5,7 +5,7 @@
         <q-toolbar-title> Ålandstrafikens reseplanerare</q-toolbar-title>
 
         <q-separator/>
-        <span class="text-grey-4 q-mr-md">v1.0c</span>
+        <span class="text-grey-4 q-mr-md">v1.0d</span>
         <q-btn
           aria-label="Menu"
           dense
