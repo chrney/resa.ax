@@ -1,20 +1,17 @@
-FROM node:18
-
-# Create app directory
-WORKDIR /usr/src/app
-
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
-
-RUN npm install
-
-# If you are building your code for production
-# RUN npm ci --only=production
-
-# Bundle app source
-COPY . .
-
+FROM node:16
 EXPOSE 8080
-CMD [ "quasar", "dev" ]
+
+## Change to your project repo https://username@github.com/username/repo_name.git
+ENV GITURL "https://github.com/chrney/resa.ax"
+WORKDIR /app
+
+RUN git clone $GITURL
+RUN npm install @quasar/cli -g
+RUN npm install http-server -g
+WORKDIR /app/resa.ax
+RUN cat package.json
+RUN git pull
+RUN npm install
+RUN quasar build
+WORKDIR /app/resa.ax/dist/spa
+CMD ["http-server", "."]
