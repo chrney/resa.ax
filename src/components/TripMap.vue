@@ -1,10 +1,11 @@
 <template>
+  {{ $q.platform }}
   <div class="q-px-lg q-pb-md">
     <q-expansion-item
       :label="$t('map.show')"
       expand-separator
       icon="map"
-      @after-show="resizeWindow"
+      @after-show="resizeWindowFn"
     >
       <q-card>
         <q-card-section>
@@ -16,10 +17,11 @@
 </template>
 
 <script>
-import { defineComponent, nextTick, onMounted } from "vue";
+import {defineComponent, nextTick, onMounted} from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import polyUtil from "polyline-encoded";
+import {useQuasar} from "quasar";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -29,19 +31,30 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
+
 export default defineComponent({
   name: "TripBody",
   props: ["item"],
   components: {},
+  //
+  // methods: {
+  //   resizeWindow() {
+  //     if (window) {
+  //       window.dispatchEvent(new Event("resize"));
+  //     }
+  //   },
+  // },
 
-  methods: {
-    resizeWindow() {
-      window.dispatchEvent(new Event("resize"));
-    },
-  },
-
-  setup: (props, { emit }) => {
+  setup: (props, {emit}) => {
+    let $q = useQuasar()
+    console.log($q.platform)
     const center = [60, 20];
+
+    const resizeWindowFn = () => {
+      if (window && ($q.platform.desktop || $q.platform.mobile)) {
+        window.dispatchEvent(new Event("resize"));
+      }
+    }
 
     onMounted(() => {
       const myMap = L.map(props.item.unique_id, {
@@ -109,7 +122,9 @@ export default defineComponent({
       ).addTo(myMap);
     });
 
-    return {};
+    return {
+      resizeWindowFn
+    };
   },
 });
 </script>
