@@ -7,6 +7,7 @@ export default {
     btn_departure: "Departure at...",
     btn_arrival: "Arrival at...",
     btn_close_calendar: "Close",
+    btn_search_swap: "Search in opposite direction ",
   },
   dropdown: {
     nothing_found: "Could not find any stops...",
@@ -32,7 +33,9 @@ export default {
     from_name: "from",
   },
   body: {
-    distance_towards: "{ distance } towards { name } (stop { bus_stop })",
+    distance_towards_with_stop:
+      "{ distance } towards { name } (stop { bus_stop })",
+    distance_towards_without_stop: "{ distance } towards { name }",
     stop: "Stop",
     line: "Line",
     waiting_time: "Waiting time",

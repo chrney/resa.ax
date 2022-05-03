@@ -9,6 +9,7 @@ export default {
     btn_departure: "Abfahrt um...",
     btn_arrival: "Ankunft um...",
     btn_close_calendar: "Schliessen",
+    btn_search_swap: "In umgekehrter Richtung suchen",
   },
   dropdown: {
     nothing_found: "Nichts gefunden...",
@@ -36,8 +37,9 @@ export default {
     from_name: "ab",
   },
   body: {
-    distance_towards:
+    distance_towards_with_stop:
       "{ distance } Richtung { name } (Haltestelle { bus_stop })",
+    distance_towards_without_stop: "{ distance } Richtung { name }",
     stop: "Haltestelle",
     line: "Linie",
     waiting_time: "Wartezeit",

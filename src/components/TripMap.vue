@@ -1,5 +1,5 @@
 <template>
-  {{ $q.platform }}
+
   <div class="q-px-lg q-pb-md">
     <q-expansion-item
       :label="$t('map.show')"
@@ -23,6 +23,8 @@ import "leaflet/dist/leaflet.css";
 import polyUtil from "polyline-encoded";
 import {useQuasar} from "quasar";
 
+require('leaflet.fullscreen/Control.FullScreen')
+require('leaflet.fullscreen/Control.FullScreen.css')
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -33,7 +35,7 @@ L.Icon.Default.mergeOptions({
 
 
 export default defineComponent({
-  name: "TripBody",
+  name: "TripMap",
   props: ["item"],
   components: {},
   //
@@ -47,25 +49,27 @@ export default defineComponent({
 
   setup: (props, {emit}) => {
     let $q = useQuasar()
-    console.log($q.platform)
     const center = [60, 20];
-
     const resizeWindowFn = () => {
-      if (window && ($q.platform.desktop || $q.platform.mobile)) {
-        window.dispatchEvent(new Event("resize"));
-      }
-    }
+      window.dispatchEvent(new Event("resize"));
 
+    }
     onMounted(() => {
+
       const myMap = L.map(props.item.unique_id, {
         center,
         minZoom: 8,
         zoom: 14,
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+          position: 'topleft'
+        }
       });
 
       let polyline_list = [];
       let stop_list = [];
       let markers_list = [];
+
 
       props.item.legs.forEach((leg, idx) => {
         let polyline = L.Polyline.fromEncoded(leg.legGeometry.points);
@@ -108,18 +112,11 @@ export default defineComponent({
       });
 
       //myMap.fitBounds(latlngBounds)//.setZoom(myMap.getBoundsZoom(latlngBounds))
-      L.tileLayer(
-        "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
-        {
-          maxZoom: 18,
-          attribution:
-            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-          id: "mapbox/streets-v11",
-          tileSize: 512,
-          zoomOffset: -1,
-        }
-      ).addTo(myMap);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18,
+      }).addTo(myMap);
     });
 
     return {

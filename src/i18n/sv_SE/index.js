@@ -7,6 +7,7 @@ export default {
     btn_departure: "Avgång kl.",
     btn_arrival: "Ankomst kl.",
     btn_close_calendar: "Stäng",
+    btn_search_swap: "Sök i omvänd riktning",
   },
   dropdown: {
     nothing_found: "Ingenting hittades...",
@@ -33,7 +34,9 @@ export default {
     from_name: "från",
   },
   body: {
-    distance_towards: "{ distance } mot { name } (hållplats { bus_stop })",
+    distance_towards_with_stop:
+      "{ distance } mot { name } (hållplats { bus_stop })",
+    distance_towards_without_stop: "{ distance } mot { name }",
     stop: "Hållplats",
     line: "Linje",
     waiting_time: "Väntetid",

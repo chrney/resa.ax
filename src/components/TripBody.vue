@@ -1,6 +1,6 @@
 <template>
   <div class="q-px-lg q-pb-md">
-    <trip-map :item="item" />
+    <trip-map :item="item"/>
 
     <q-timeline
       v-for="(leg, idx) in item.graph"
@@ -15,13 +15,23 @@
             :icon="$mode_to_icon(leg.mode)"
             class="walk-mode"
           >
-            {{
-              $t("body.distance_towards", {
-                distance: $get_distance_string(leg.distance),
-                name: leg.to.name,
-                bus_stop: leg.from.stop.gtfsId.slice(-1),
-              })
-            }}
+            <template v-if="leg.from.busStopNumber !== ''">{{
+                $t("body.distance_towards_with_stop", {
+                  distance: $get_distance_string(leg.distance),
+                  name: leg.to.name,
+                  bus_stop: leg.from.busStopNumber
+                })
+              }}
+            </template>
+
+            <template v-if="leg.from.busStopNumber === ''">{{
+                $t("body.distance_towards_without_stop", {
+                  distance: $get_distance_string(leg.distance),
+                  name: leg.to.name
+                })
+              }}
+            </template>
+
           </q-timeline-entry>
         </template>
         <template v-if="leg.mode !== 'WALK'">
@@ -30,7 +40,7 @@
             :subtitle="$formatTS(leg.startTime, 'HH:mm')"
             :title="leg.from.name"
             class="no-walk-mode"
-            >{{ $t("body.stop") }} {{ leg.from.stop.gtfsId.slice(-1) }}
+          >{{ $t("body.stop") }} {{ leg.from.busStopNumber }}
           </q-timeline-entry>
 
           <!-- travel mode -->
@@ -43,7 +53,7 @@
               {{ $t("body.line") }}
               <q-chip>{{ leg.route.shortName }}</q-chip>
               ({{ leg.route.longName }})
-              <trip-body-expanded :leg="leg" />
+              <trip-body-expanded :leg="leg"/>
             </template>
           </q-timeline-entry>
 
@@ -55,7 +65,7 @@
             class="no-walk-mode"
           >
             <template v-if="leg.from.name === leg.to.name">
-              {{ $t("body.stop") }} {{ leg.to.stop.gtfsId.slice(-1) }}
+              {{ $t("body.stop") }} {{ leg.to.busStopNumber }}
             </template>
           </q-timeline-entry>
         </template>
@@ -64,7 +74,7 @@
       <template v-if="leg.type === 'pause' && leg.secFormated > 1">
         <q-banner class="bg-grey-8 text-white">
           <template v-slot:avatar>
-            <q-icon name="hourglass_top" />
+            <q-icon name="hourglass_top"/>
           </template>
           {{ $t("body.waiting_time") }}: {{ leg.secFormated }} min
         </q-banner>
@@ -76,7 +86,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import TripBodyExpanded from "components/TripBodyExpanded.vue";
 import TripMap from "components/TripMap";
 

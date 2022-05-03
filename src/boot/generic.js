@@ -61,7 +61,7 @@ const get_distance_string = (distance) => {
   if (distance > 200) {
     return (Math.round(distance / 100) * 100) / 1000 + " km";
   }
-  if (distance > 40) {
+  if (distance > 0) {
     return parseInt(distance) + " m";
   }
   return "";

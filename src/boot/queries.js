@@ -34,6 +34,8 @@ query SummaryPage_WalkBike_Query(
       wheelchair: false,
       arriveBy: $arriveBy,
       pageCursor: $pageCursor
+      walkReluctance: 4
+
     ) {
       previousPageCursor
       nextPageCursor

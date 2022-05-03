@@ -7,10 +7,13 @@ export default {
     btn_departure: "Lähtö klo.",
     btn_arrival: "Perillä klo.",
     btn_close_calendar: "Sulje",
+    btn_search_swap: "Käännä reitin suunta vastakkaiseksi",
   },
+
   dropdown: {
     nothing_found: "Mitään ei löytynyt...",
   },
+
   results: {
     nothing_searched_yet_left:
       "Valitse mistä haluat matkustaa hakukentissä { placement }",
@@ -18,6 +21,7 @@ export default {
     found_for_next_day:
       "Yhteyksiä ei löytynyt valitulle päivälle, näytetään sen sijaan seuraava päivä",
   },
+
   header: {
     //roughly: "noin",
     duration: "Matka-aika",
@@ -32,7 +36,9 @@ export default {
     from_name: "päästä pysäkiltä",
   },
   body: {
-    distance_towards: "{ distance } päin { name } (pysäkki { bus_stop })",
+    distance_towards_with_stop:
+      "{ distance } päin { name } (pysäkki { bus_stop })",
+    distance_towards_without_stop: "{ distance } päin { name }",
     stop: "Pysäkki",
     line: "Linja",
     waiting_time: "Odotusaika",

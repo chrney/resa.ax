@@ -9,7 +9,6 @@ RUN git clone $GITURL
 RUN npm install @quasar/cli -g
 RUN npm install http-server -g
 WORKDIR /app/resa.ax
-RUN cat package.json
 RUN git pull
 RUN npm install
 RUN quasar build

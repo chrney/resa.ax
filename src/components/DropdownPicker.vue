@@ -18,7 +18,7 @@
     @update:model-value="updateFn"
   >
     <template v-slot:prepend>
-      <q-icon :name="icon" />
+      <q-icon :name="icon"/>
     </template>
     <template v-slot:no-option>
       <q-item>
@@ -38,15 +38,19 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import {defineComponent, ref, watch} from "vue";
 
 export default defineComponent({
   name: "DropdownPicker",
-  props: ["label", "data", "direction", "icon"],
+  props: ["label", "data", "direction", "icon", "preset"],
   components: {},
   emits: ["stopChosen"],
   setup(props, context) {
     let lastVal = null;
+
+    watch(() => props.preset, (newValue) => {
+      model.value = newValue
+    });
 
     const weightedSearch = (array, weightedTests, sortProperty) => {
       return array
@@ -122,6 +126,7 @@ export default defineComponent({
         },
 
         (ref) => {
+          console.log(ref, val)
           if (val !== "" && ref.options && ref.options.length > 0) {
             ref.setOptionIndex(-1); // reset optionIndex in case there is something selected
             ref.moveOptionSelection(1, true); // focus the first selectable option and do not update the input-value
@@ -129,6 +134,7 @@ export default defineComponent({
         }
       );
     };
+
 
     const updateFn = () => {
       context.emit("stopChosen", {
@@ -138,7 +144,7 @@ export default defineComponent({
     };
 
     const options = ref(defaultOptions());
-    let model = ref(props.data.find((item) => item.id === props.preset));
+    let model = ref(null /*props.data.find((item) => item.id === props.preset)*/);
 
     return {
       options,
