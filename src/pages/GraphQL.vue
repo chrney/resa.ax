@@ -2,7 +2,7 @@
   <div class="row q-col-gutter-md">
     <div class="col-md-6 col-xs-12">
       <p>
-        <q-input v-model="input" filled type="textarea" />
+        <q-input v-model="input" filled type="textarea"/>
       </p>
       <p>
         <q-btn color="primary" @click="submitFn()">Test</q-btn>
@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
-import { api } from "boot/axios";
+import {defineComponent, ref} from "vue";
+import {api} from "boot/api";
 
 export default defineComponent({
   components: {},
