@@ -5,19 +5,19 @@
         <q-toolbar-title> Ålandstrafikens reseplanerare</q-toolbar-title>
 
         <q-separator/>
-        <span class="text-grey-4 q-mr-md">v1.0d</span>
+        <span class="text-grey-4 q-mr-md">v1.0</span>
         <q-btn
           aria-label="Menu"
           dense
           flat
           icon="language"
           round
-          @click="toggleLeftDrawer"
+          @click="toggleRightDrawer"
         />
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" bordered side="right">
+    <q-drawer v-model="rightDrawerOpen" bordered side="right">
       <q-list>
         <q-item-label header> Choose language</q-item-label>
 
@@ -50,14 +50,13 @@ import {moment, scroll_to_results} from "boot/generic";
 import {languages} from "boot/i18n";
 
 const {getScrollTarget, setVerticalScrollPosition} = scroll;
-
 export default defineComponent({
   name: "MainLayout",
 
   methods: {
     async changeLanguageFn(locale) {
       this.$i18n.locale = locale.key;
-      this.leftDrawerOpen = false;
+      this.rightDrawerOpen = false;
       moment.locale(locale.moment_key);
       await import("quasar/lang/" + locale.file).then((lang) => {
         this.$q.lang.set(lang.default);
@@ -69,7 +68,7 @@ export default defineComponent({
 
   watch: {
     // whenever question changes, this function will run
-    leftDrawerOpen(newVal) {
+    rightDrawerOpen(newVal) {
       if (newVal === true) {
         scroll_to_results();
       }
@@ -77,14 +76,14 @@ export default defineComponent({
   },
 
   setup: function () {
-    const leftDrawerOpen = ref(false);
-
+    const rightDrawerOpen = ref(false);
     return {
       languages,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
+      rightDrawerOpen,
+      toggleRightDrawer() {
+        rightDrawerOpen.value = !rightDrawerOpen.value;
       },
+      version
     };
   },
 });
