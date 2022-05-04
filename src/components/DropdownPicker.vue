@@ -126,7 +126,6 @@ export default defineComponent({
         },
 
         (ref) => {
-          console.log(ref, val)
           if (val !== "" && ref.options && ref.options.length > 0) {
             ref.setOptionIndex(-1); // reset optionIndex in case there is something selected
             ref.moveOptionSelection(1, true); // focus the first selectable option and do not update the input-value
