@@ -9,8 +9,8 @@
 // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
 
 const ESLintPlugin = require("eslint-webpack-plugin");
-
 const { configure } = require("quasar/wrappers");
+const webpack = require("webpack");
 
 module.exports = configure(function (ctx) {
   return {
@@ -67,6 +67,26 @@ module.exports = configure(function (ctx) {
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
 
       chainWebpack(chain) {
+        chain.output.filename("js/resa-ax-[name].js");
+        chain.output.chunkFilename("js/resa-ax-chunk-[id].js");
+        //chain.output.path(path.resolve(__dirname, "dist-mongo")),
+        const childProcess = require("child_process");
+
+        [mainVersion, branchVersion, patchVersion] = require(__dirname +
+          "/package.json").version.split(".");
+
+        const __versionString__ = [
+          mainVersion,
+          branchVersion,
+          childProcess.execSync('git log -n1 --format=format:"%p"').toString(),
+        ].join(".");
+
+        chain.plugin("my_version_plugin").use(
+          new webpack.DefinePlugin({
+            __VERSION__: JSON.stringify(__versionString__),
+          })
+        );
+
         chain
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js", "vue"] }]);

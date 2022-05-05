@@ -5,7 +5,7 @@
         <q-toolbar-title> Ålandstrafikens reseplanerare</q-toolbar-title>
 
         <q-separator/>
-        <span class="text-grey-4 q-mr-md">v1.0</span>
+        <span class="text-grey-4 q-mr-md">v{{ version }}</span>
         <q-btn
           aria-label="Menu"
           dense
@@ -83,6 +83,7 @@ export default defineComponent({
       toggleRightDrawer() {
         rightDrawerOpen.value = !rightDrawerOpen.value;
       },
+      version: ref(__VERSION__)
     };
   },
 });
