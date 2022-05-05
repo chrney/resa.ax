@@ -78,7 +78,7 @@ module.exports = configure(function (ctx) {
         const __versionString__ = [
           mainVersion,
           branchVersion,
-          childProcess.execSync('git log -n1 --format=format:"%p"').toString(),
+          childProcess.execSync("git rev-parse --short HEAD").toString(),
         ].join(".");
 
         console.log("Version", __versionString__);
