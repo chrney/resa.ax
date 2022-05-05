@@ -81,7 +81,7 @@ module.exports = configure(function (ctx) {
           childProcess.execSync('git log -n1 --format=format:"%p"').toString(),
         ].join(".");
 
-        chain.plugin("my_version_plugin").use(
+        chain.plugin("my-version-plugin").use(
           new webpack.DefinePlugin({
             __VERSION__: JSON.stringify(__versionString__),
           })
