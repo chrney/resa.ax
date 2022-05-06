@@ -11,7 +11,7 @@
       {{ $t("expanded.passing") }}&nbsp;<strong>{{
         leg.intermediatePlaces.length
       }}</strong
-      >&nbsp;
+    >&nbsp;
       {{ $t("expanded.stops_plural", leg.intermediatePlaces.length) }}
     </template>
 
@@ -25,7 +25,7 @@
         dense
       >
         <template v-slot:title
-          ><span class="title">{{ place.stop.name }}</span>
+        ><span class="title">{{ place.stop.name }}</span>
         </template>
       </q-timeline-entry>
     </q-timeline>
@@ -33,11 +33,13 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
+import {QExpansionItem, QTimeline, QTimelineEntry} from "quasar";
 
 export default defineComponent({
   name: "TripBodyExpanded",
   props: ["leg"],
+  components: {QExpansionItem, QTimeline, QTimelineEntry}
 });
 </script>
 
@@ -55,7 +57,7 @@ body.desktop .item-header.q-hoverable:hover > .q-focus-helper {
 }
 
 .sub_timeline .q-timeline__subtitle {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .sub_timeline .title {

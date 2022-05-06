@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
   <div class="q-px-lg q-pb-md">
     <trip-map :item="item"/>
@@ -89,6 +90,7 @@
 import {defineComponent} from "vue";
 import TripBodyExpanded from "components/TripBodyExpanded.vue";
 import TripMap from "components/TripMap";
+import {QBanner, QChip, QTimeline, QTimelineEntry} from "quasar"
 
 export default defineComponent({
   name: "TripBody",
@@ -96,6 +98,10 @@ export default defineComponent({
   components: {
     TripBodyExpanded,
     TripMap,
+    QTimeline,
+    QTimelineEntry,
+    QChip,
+    QBanner
   },
 });
 </script>

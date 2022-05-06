@@ -50,14 +50,41 @@
 <script>
 import {defineComponent, ref} from "vue";
 
-import {scroll} from "quasar";
+import {
+  QBtn,
+  QDrawer,
+  QHeader,
+  QItem,
+  QItemLabel,
+  QItemSection,
+  QLayout,
+  QList,
+  QPageContainer,
+  QSeparator,
+  QToolbar,
+  QToolbarTitle,
+  scroll
+} from "quasar";
 import {moment, scroll_to_results} from "boot/generic";
 import {languages} from "boot/i18n";
 
 const {getScrollTarget, setVerticalScrollPosition} = scroll;
 export default defineComponent({
   name: "MainLayout",
-
+  components: {
+    QLayout,
+    QHeader,
+    QToolbar,
+    QToolbarTitle,
+    QSeparator,
+    QBtn,
+    QDrawer,
+    QList,
+    QItemLabel,
+    QItem,
+    QItemSection,
+    QPageContainer
+  },
   methods: {
     async changeLanguageFn(locale) {
       this.$i18n.locale = locale.key;

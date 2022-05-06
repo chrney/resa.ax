@@ -18,10 +18,10 @@
 <script>
 import {defineComponent, ref} from "vue";
 import {api} from "boot/api";
+import {QBtn, QInput} from "quasar";
 
 export default defineComponent({
-  components: {},
-
+  components: {QInput, QBtn},
   name: "GraphQL",
 
   setup: function () {

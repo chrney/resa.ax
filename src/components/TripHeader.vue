@@ -86,10 +86,11 @@
 <script>
 import {defineComponent} from "vue";
 import TripIcon from "components/TripIcon";
+import {QIcon, QTooltip} from "quasar"
 
 export default defineComponent({
   name: "TripHeader",
   props: ["plan"],
-  components: {TripIcon},
+  components: {TripIcon, QTooltip, QIcon},
 });
 </script>

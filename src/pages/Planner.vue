@@ -10,14 +10,14 @@
     </div>
     <div class="col-md-6 col-xs-12">
       <div id="search_result" class="box-background q-pa-md">
-        <trip-list :searchState="searchState" :trips="found_trips" />
+        <trip-list :searchState="searchState" :trips="found_trips"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import {defineComponent, ref} from "vue";
 import TripList from "components/TripList.vue";
 import SearchForm from "components/SearchForm";
 

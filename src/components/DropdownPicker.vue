@@ -39,11 +39,12 @@
 
 <script>
 import {defineComponent, ref, watch} from "vue";
+import {QIcon, QItem, QItemSection, QSelect} from "quasar"
 
 export default defineComponent({
   name: "DropdownPicker",
   props: ["label", "data", "direction", "icon", "preset"],
-  components: {},
+  components: {QSelect, QIcon, QItem, QItemSection},
   emits: ["stopChosen"],
   setup(props, context) {
     let lastVal = null;

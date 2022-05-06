@@ -10,20 +10,22 @@
       <q-btn
         class="q-mt-xl"
         color="white"
-        text-color="blue"
-        unelevated
-        to="/"
         label="Go Home"
         no-caps
+        text-color="blue"
+        to="/"
+        unelevated
       />
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
+import {QBtn} from "quasar";
 
 export default defineComponent({
   name: "ErrorNotFound",
+  components: {QBtn}
 });
 </script>

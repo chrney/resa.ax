@@ -21,7 +21,7 @@ import {defineComponent, nextTick, onMounted} from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import polyUtil from "polyline-encoded";
-import {useQuasar} from "quasar";
+import {QCard, QCardSection, QExpansionItem} from "quasar";
 
 require('leaflet.fullscreen/Control.FullScreen')
 require('leaflet.fullscreen/Control.FullScreen.css')
@@ -37,9 +37,8 @@ L.Icon.Default.mergeOptions({
 export default defineComponent({
   name: "TripMap",
   props: ["item"],
-
-  setup: (props, {emit}) => {
-    let $q = useQuasar()
+  components: {QExpansionItem, QCard, QCardSection},
+  setup: (props) => {
     const center = [60, 20];
     const resizeWindowFn = () => {
       window.dispatchEvent(new Event("resize"));
@@ -115,10 +114,8 @@ export default defineComponent({
       const observer = new MutationObserver((mutations, obs) => {
         const mapDiv = document.getElementById(props.item.unique_id);
         if (mapDiv) {
-          console.log('div available')
           create_map()
           obs.disconnect();
-
         }
       });
 

@@ -70,6 +70,7 @@ import {defineComponent} from "vue";
 import TripContent from "components/TripContent.vue";
 import TripHeader from "components/TripHeader.vue";
 import {moment} from "boot/generic";
+import {QBanner, QExpansionItem, QIcon, QList, QSpinner} from "quasar";
 
 export default defineComponent({
   name: "TripList",
@@ -77,6 +78,7 @@ export default defineComponent({
   components: {
     TripContent,
     TripHeader,
+    QBanner, QIcon, QSpinner, QList, QExpansionItem
   },
 
   computed: {
