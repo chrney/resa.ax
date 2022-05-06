@@ -29,7 +29,7 @@ export default {
     hours: "{ hours } hrs",
     waiting_time: "Waiting time",
     in_the_future: "In",
-    in_x_days_singular_plural: "{days} day|{ days } days",
+    in_x_days_singular_plural: "1 day|{ days } days",
     from_name: "from",
   },
   body: {

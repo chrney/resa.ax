@@ -5,7 +5,7 @@
         <q-toolbar-title> Ålandstrafikens reseplanerare</q-toolbar-title>
 
         <q-separator/>
-        <span class="text-grey-4 q-mr-md">v{{ version }}</span>
+
         <q-btn
           aria-label="Menu"
           dense
@@ -37,9 +37,14 @@
     <q-page-container class="page-centered">
       <div class="q-pa-md">
         <router-view/>
+        <span class="text-grey-6 q-mr-md">v{{ version }}</span>
       </div>
+
+
     </q-page-container>
   </q-layout>
+
+
 </template>
 
 <script>

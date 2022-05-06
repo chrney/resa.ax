@@ -30,7 +30,7 @@ export default {
     hours: "{ hours } tim",
     waiting_time: "Väntetid",
     in_the_future: "Om",
-    in_x_days_singular_plural: "{days} dag | { days } dagar",
+    in_x_days_singular_plural: "1 dag | { days } dagar",
     from_name: "från",
   },
   body: {

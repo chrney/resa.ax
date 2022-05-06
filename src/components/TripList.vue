@@ -1,9 +1,9 @@
 <template>
   <template v-if="searchState === 'none'">
     <q-banner class="text-black bg-info">
-      <q-icon color="primary" name="search" />
+      <q-icon color="primary" name="search"/>
       <template v-if="$q.screen.lt.md"
-        >{{ $t("results.nothing_searched_yet_above") }}.
+      >{{ $t("results.nothing_searched_yet_above") }}.
       </template>
       <template v-else>{{ $t("results.nothing_searched_yet_left") }}</template>
     </q-banner>
@@ -22,7 +22,7 @@
       class="text-black bg-negative"
     >
       <template v-slot:avatar>
-        <q-icon color="black" name="warning" />
+        <q-icon color="black" name="warning"/>
       </template>
       {{ $t("results.nothing_found") }}
     </q-banner>
@@ -31,13 +31,13 @@
       <template v-if="trips.search_date !== Object.keys(date_groups)[0]">
         <q-banner class="text-black bg-warning q-mb-md">
           <template v-slot:avatar>
-            <q-icon color="black" name="warning" />
+            <q-icon color="black" name="warning"/>
           </template>
           {{ $t("results.found_for_next_day") }}.
         </q-banner>
       </template>
       <div v-for="(date, d_idx) in Object.keys(date_groups)" v-bind:key="d_idx">
-        <div class="text-h6 text-center bg-grey-4">
+        <div class="text-h6 bg-grey-4">&nbsp;
           {{
             $moment(date).format("dddd")[0].toLocaleUpperCase() +
             $moment(date).format("dddd").slice(1)
@@ -54,10 +54,10 @@
           >
             <template v-slot:header>
               <div class="full-width">
-                <trip-header :plan="item" />
+                <trip-header :plan="item"/>
               </div>
             </template>
-            <trip-content :item="item" />
+            <trip-content :item="item"/>
           </q-expansion-item>
         </q-list>
       </div>
@@ -66,10 +66,10 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
 import TripContent from "components/TripContent.vue";
 import TripHeader from "components/TripHeader.vue";
-import { moment } from "boot/generic";
+import {moment} from "boot/generic";
 
 export default defineComponent({
   name: "TripList",

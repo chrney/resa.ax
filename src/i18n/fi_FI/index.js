@@ -32,7 +32,7 @@ export default {
     hours: "{ hours } t",
     waiting_time: "Odotusaika",
     in_the_future: "Lähtee",
-    in_x_days_singular_plural: "{days} päivä|{ days } päivän",
+    in_x_days_singular_plural: "1 päivä|{ days } päivän",
     from_name: "päästä pysäkiltä",
   },
   body: {
