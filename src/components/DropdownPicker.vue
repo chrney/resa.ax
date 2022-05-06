@@ -22,7 +22,7 @@
     </template>
     <template v-slot:no-option>
       <q-item>
-        <q-item-section class="text-grey">
+        <q-item-section class="text-white">
           {{ $t("dropdown.nothing_found") }}
         </q-item-section>
       </q-item>

@@ -33,7 +33,7 @@ export default {
     hours: "{ hours } Std",
     waiting_time: "Wartezeit",
     in_the_future: "In",
-    in_x_days_singular_plural: "1 Tag | { days } Tagen",
+    in_x_days_singular_plural: "1 Tag | { n } Tagen",
     from_name: "ab",
   },
   body: {

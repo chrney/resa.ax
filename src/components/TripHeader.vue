@@ -63,11 +63,11 @@
     <div class="col-12">
       {{ $t("header.in_the_future") }}
       <strong>
-        <template v-if="plan.diff.days() > 0">
-          {{ $t("header.in_x_days_singular_plural", {days: plan.diff.days()}) }}&nbsp;
+        <template v-if="plan.days_absolute > 0">
+          {{ $tc("header.in_x_days_singular_plural", plan.days_absolute) }}&nbsp;
         </template>
-        <template v-if="plan.diff.hours() > 0 || plan.diff.days() > 0"
-        >{{ $t("header.hours", {hours: plan.diff.hours()}) }}
+        <template v-if="plan.diff.hours() > 0 || plan.diff.days() > 0">
+          {{ $t("header.hours", {hours: plan.diff.hours()}) }}&nbsp;
         </template>
         <template
           v-if="
@@ -75,7 +75,7 @@
             plan.diff.hours() > 0 ||
             plan.diff.days() > 0
           "
-        >&nbsp;{{ plan.diff.minutes() }} {{ $t("header.minutes") }}
+        >{{ plan.diff.minutes() }} {{ $t("header.minutes") }}
         </template>
       </strong>
       {{ $t("header.from_name") }} <strong>{{ plan.search.from.name }}</strong>

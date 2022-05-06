@@ -9,7 +9,7 @@
     >
       <q-card>
         <q-card-section>
-          <div :id="item.unique_id" style="height: 20vw"></div>
+          <div :id="item.unique_id" style="height: 35vw"></div>
         </q-card-section>
       </q-card>
     </q-expansion-item>
@@ -37,86 +37,97 @@ L.Icon.Default.mergeOptions({
 export default defineComponent({
   name: "TripMap",
   props: ["item"],
-  components: {},
-  //
-  // methods: {
-  //   resizeWindow() {
-  //     if (window) {
-  //       window.dispatchEvent(new Event("resize"));
-  //     }
-  //   },
-  // },
 
   setup: (props, {emit}) => {
     let $q = useQuasar()
     const center = [60, 20];
     const resizeWindowFn = () => {
       window.dispatchEvent(new Event("resize"));
-
     }
+
     onMounted(() => {
 
-      const myMap = L.map(props.item.unique_id, {
-        center,
-        minZoom: 8,
-        zoom: 14,
-        fullscreenControl: true,
-        fullscreenControlOptions: {
-          position: 'topleft'
-        }
-      });
+      const create_map = () => {
+        const myMap = L.map(props.item.unique_id, {
+          center,
+          minZoom: 8,
+          zoom: 14,
+          fullscreenControl: true,
+          fullscreenControlOptions: {
+            position: 'topleft'
+          }
+        });
 
-      let polyline_list = [];
-      let stop_list = [];
-      let markers_list = [];
+        let polyline_list = [];
+        let stop_list = [];
+        let markers_list = [];
 
+        props.item.legs.forEach((leg, idx) => {
+          let polyline = L.Polyline.fromEncoded(leg.legGeometry.points);
+          let points_in_line = polyUtil.decode(leg.legGeometry.points);
 
-      props.item.legs.forEach((leg, idx) => {
-        let polyline = L.Polyline.fromEncoded(leg.legGeometry.points);
-        let points_in_line = polyUtil.decode(leg.legGeometry.points);
+          markers_list.push(points_in_line[points_in_line.length - 1]);
+          if (idx === 0) {
+            markers_list.push(points_in_line[0]);
+          }
+          if (leg.intermediatePlaces) {
+            leg.intermediatePlaces.forEach((place) => {
+              stop_list.push([place.stop.lat, place.stop.lon]);
+            });
+          }
 
-        markers_list.push(points_in_line[points_in_line.length - 1]);
-        if (idx === 0) {
-          markers_list.push(points_in_line[0]);
-        }
-        if (leg.intermediatePlaces) {
-          leg.intermediatePlaces.forEach((place) => {
-            stop_list.push([place.stop.lat, place.stop.lon]);
-          });
-        }
+          polyline_list.push(polyline);
+          polyline.addTo(myMap);
+        });
 
-        polyline_list.push(polyline);
-        polyline.addTo(myMap);
-      });
+        markers_list.forEach((marker) => {
+          new L.marker(marker).addTo(myMap);
+        });
 
-      markers_list.forEach((marker) => {
-        new L.marker(marker).addTo(myMap);
-      });
+        stop_list.forEach((stop) => {
+          L.circleMarker(stop, {
+            color: "red",
+            fillColor: "#f03",
+            fillOpacity: 0.5,
+            radius: 2,
+            weight: 1,
+          }).addTo(myMap);
+        });
 
-      stop_list.forEach((stop) => {
-        L.circleMarker(stop, {
-          color: "red",
-          fillColor: "#f03",
-          fillOpacity: 0.5,
-          radius: 2,
-          weight: 1,
+        let latlngs = polyline_list.map((line) => line.getLatLngs());
+        let latlngBounds = L.latLngBounds(latlngs);
+        nextTick(() => {
+          myMap
+            .fitBounds(latlngBounds)
+            .setZoom(myMap.getBoundsZoom(latlngBounds));
+        });
+
+        //myMap.fitBounds(latlngBounds)//.setZoom(myMap.getBoundsZoom(latlngBounds))
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 18,
         }).addTo(myMap);
+      }
+
+      // create_map()
+
+      const observer = new MutationObserver((mutations, obs) => {
+        const mapDiv = document.getElementById(props.item.unique_id);
+        if (mapDiv) {
+          console.log('div available')
+          create_map()
+          obs.disconnect();
+
+        }
       });
 
-      let latlngs = polyline_list.map((line) => line.getLatLngs());
-      let latlngBounds = L.latLngBounds(latlngs);
-      nextTick(() => {
-        myMap
-          .fitBounds(latlngBounds)
-          .setZoom(myMap.getBoundsZoom(latlngBounds));
+      observer.observe(document, {
+        childList: true,
+        subtree: true
       });
 
-      //myMap.fitBounds(latlngBounds)//.setZoom(myMap.getBoundsZoom(latlngBounds))
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 18,
-      }).addTo(myMap);
     });
 
     return {

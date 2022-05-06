@@ -4,7 +4,7 @@ import messages from "src/i18n";
 export default ({ app }) => {
   // Create I18n instance
   const i18n = createI18n({
-    legacy: false,
+    // legacy: false,
     locale: "sv_SE",
     messages,
   });

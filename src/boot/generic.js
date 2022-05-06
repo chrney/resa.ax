@@ -29,6 +29,9 @@ const mode_to_icon = (mode) => {
     case "FERRY":
       icon = "directions_boat";
       break;
+    case "BICYCLE":
+      icon = "directions_bike";
+      break;
   }
   return icon;
 };
@@ -46,6 +49,9 @@ const get_mode_class = (leg) => {
 
         case "FERRY":
           return ["bg-green", "text-white", "text-weight-bold"];
+
+        case "BICYCLE":
+          return ["bg-red", "text-white", "text-weight-bold"];
 
         default:
           return ["bg-blue-4", "text-white", "text-weight-bold"];

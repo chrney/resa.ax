@@ -67,6 +67,8 @@ const extend_trip = (item, point) => {
   const now = moment(new Date());
 
   item.diff = moment.duration(moment(item.startTime).diff(now));
+  item.days_absolute = moment(item.startTime).diff(now, "days");
+
   item.unique_id =
     "id_" + (Date.now().toString(36) + Math.random().toString(36).substr(2));
   item.duration = moment.duration(moment(item.endTime).diff(item.startTime));

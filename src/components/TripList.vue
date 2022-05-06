@@ -19,10 +19,10 @@
   <template v-if="searchState === 'done'">
     <q-banner
       v-if="trips.found_trips.length === 0"
-      class="text-black bg-negative"
+      class="text-white bg-negative"
     >
       <template v-slot:avatar>
-        <q-icon color="black" name="warning"/>
+        <q-icon color="white" name="warning"/>
       </template>
       {{ $t("results.nothing_found") }}
     </q-banner>
