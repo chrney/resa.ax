@@ -30,6 +30,9 @@ export default {
     waiting_time: "Waiting time",
     in_the_future: "In",
     in_x_days_singular_plural: "1 day|{ n } days",
+
+    bus_will_leave: "Bus departs",
+    ferry_will_leave: "Ferry departs",
     from_name: "from",
   },
   body: {
@@ -39,6 +42,7 @@ export default {
     stop: "Stop",
     line: "Line",
     waiting_time: "Waiting time",
+    distance: "Distance",
   },
   expanded: {
     passing: "Passing",

@@ -32,12 +32,16 @@ const mode_to_icon = (mode) => {
     case "BICYCLE":
       icon = "directions_bike";
       break;
+
+    case "CAR":
+      icon = "directions_car";
+      break;
   }
   return icon;
 };
 
 const get_mode_class = (leg) => {
-  switch (leg.type) {
+  switch (leg.mode) {
     case "pause":
       return ["bg-grey-3", "text-black"];
     default:
@@ -51,11 +55,29 @@ const get_mode_class = (leg) => {
           return ["bg-green", "text-white", "text-weight-bold"];
 
         case "BICYCLE":
-          return ["bg-red", "text-white", "text-weight-bold"];
+          return ["bg-light-green", "text-black", "text-weight-bold"];
+
+        case "CAR":
+          return ["bg-deep-purple-10", "text-white", "text-weight-bold"];
 
         default:
           return ["bg-blue-4", "text-white", "text-weight-bold"];
       }
+  }
+};
+
+const get_mode_color = (leg) => {
+  switch (leg.mode) {
+    case "WALK":
+      return "#B7BCBE";
+    case "BUS":
+      return "#399BEC";
+    case "FERRY":
+      return "#5AB062";
+    case "BICYCLE":
+      return "#8CC24A";
+    default:
+      return "#00F";
   }
 };
 
@@ -94,4 +116,5 @@ export {
   get_mode_class,
   get_bg_class_for_mode,
   scroll_to_results,
+  get_mode_color,
 };

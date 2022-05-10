@@ -33,6 +33,9 @@ export default {
     waiting_time: "Odotusaika",
     in_the_future: "Lähtee",
     in_x_days_singular_plural: "1 päivä|{ n } päivän",
+
+    bus_will_leave: "Bussi lähtee",
+    ferry_will_leave: "Lauttta lähtee",
     from_name: "päästä pysäkiltä",
   },
   body: {
@@ -42,6 +45,7 @@ export default {
     stop: "Pysäkki",
     line: "Linja",
     waiting_time: "Odotusaika",
+    distance: "Matkan pituus",
   },
   expanded: {
     passing: "Ohittaa",

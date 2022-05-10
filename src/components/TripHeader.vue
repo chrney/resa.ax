@@ -60,26 +60,33 @@
       </template>
     </div>
 
-    <div class="col-12">
-      {{ $t("header.in_the_future") }}
-      <strong>
-        <template v-if="plan.days_absolute > 0">
-          {{ $tc("header.in_x_days_singular_plural", plan.days_absolute) }}&nbsp;
-        </template>
-        <template v-if="plan.diff.hours() > 0 || plan.diff.days() > 0">
-          {{ $t("header.hours", {hours: plan.diff.hours()}) }}&nbsp;
-        </template>
-        <template
-          v-if="
-            plan.diff.minutes() > 0 ||
-            plan.diff.hours() > 0 ||
-            plan.diff.days() > 0
-          "
-        >{{ plan.diff.minutes() }} {{ $t("header.minutes") }}
-        </template>
-      </strong>
-      {{ $t("header.from_name") }} <strong>{{ plan.search.from.name }}</strong>
+    <div v-if="plan.first_public_leg" class="col-12">
+      {{ $t('header.' + plan.first_public_leg.mode.toLowerCase() + '_will_leave') }}
+      <strong>{{ $moment(plan.first_public_leg.startTime).format("dddd").toLowerCase() }} kl.
+        {{ $moment(plan.first_public_leg.startTime).format("LT") }}</strong> {{ $t('header.from_name') }}
+      <strong>{{ plan.first_public_leg.from.name }}</strong>
     </div>
+    <!--    <div v-if="plan.days_absolute > 0 || plan.diff.hours() > 0 || plan.diff.days() > 0 || plan.diff.minutes() >0 "-->
+    <!--         >-->
+    <!--      {{ $t("header.in_the_future") }}-->
+    <!--      <strong>-->
+    <!--        <template v-if="plan.days_absolute > 0">-->
+    <!--          {{ $tc("header.in_x_days_singular_plural", plan.days_absolute) }}&nbsp;-->
+    <!--        </template>-->
+    <!--        <template v-if="plan.diff.hours() > 0 || plan.days_absolute > 0">-->
+    <!--          {{ $t("header.hours", {hours: plan.diff.hours()}) }}&nbsp;-->
+    <!--        </template>-->
+    <!--        <template-->
+    <!--          v-if="-->
+    <!--            plan.diff.minutes() > 0 ||-->
+    <!--            plan.diff.hours() > 0 ||-->
+    <!--            plan.diff.days() > 0-->
+    <!--          "-->
+    <!--        >{{ plan.diff.minutes() }} {{ $t("header.minutes") }}-->
+    <!--        </template>-->
+    <!--      </strong>-->
+
+    <!--    </div>-->
   </div>
 </template>
 

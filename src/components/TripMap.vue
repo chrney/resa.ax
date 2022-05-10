@@ -22,6 +22,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import polyUtil from "polyline-encoded";
 import {QCard, QCardSection, QExpansionItem} from "quasar";
+import {get_mode_color} from "boot/generic";
 
 require('leaflet.fullscreen/Control.FullScreen')
 require('leaflet.fullscreen/Control.FullScreen.css')
@@ -31,6 +32,12 @@ L.Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
   iconUrl: require("leaflet/dist/images/marker-icon.png"),
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+  iconSize: [12, 20], // size of the icon
+  shadowSize: [24, 42], // size of the shadow
+  iconAnchor: [6, 20], // point of the icon which will correspond to marker's location
+  shadowAnchor: [6, 40],  // the same for the shadow
+  popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+
 });
 
 
@@ -62,7 +69,10 @@ export default defineComponent({
         let markers_list = [];
 
         props.item.legs.forEach((leg, idx) => {
-          let polyline = L.Polyline.fromEncoded(leg.legGeometry.points);
+          let polyline = L.Polyline.fromEncoded(leg.legGeometry.points,
+            {
+              color: get_mode_color(leg)
+            });
           let points_in_line = polyUtil.decode(leg.legGeometry.points);
 
           markers_list.push(points_in_line[points_in_line.length - 1]);
@@ -89,7 +99,7 @@ export default defineComponent({
             fillColor: "#f03",
             fillOpacity: 0.5,
             radius: 2,
-            weight: 1,
+            weight: 0,
           }).addTo(myMap);
         });
 

@@ -34,6 +34,9 @@ export default {
     waiting_time: "Wartezeit",
     in_the_future: "In",
     in_x_days_singular_plural: "1 Tag | { n } Tagen",
+
+    bus_will_leave: "Abfahrt mit Bus",
+    ferry_will_leave: "Abfahrt mit Fähre",
     from_name: "ab",
   },
   body: {
@@ -43,6 +46,7 @@ export default {
     stop: "Haltestelle",
     line: "Linie",
     waiting_time: "Wartezeit",
+    distance: "Länge der Strecke",
   },
   expanded: {
     passing: "Fährt vorbei an",

@@ -31,6 +31,9 @@ export default {
     waiting_time: "Väntetid",
     in_the_future: "Om",
     in_x_days_singular_plural: "1 dag | { n } dagar",
+
+    bus_will_leave: "Bussen avgår",
+    ferry_will_leave: "Färjan avgår",
     from_name: "från",
   },
   body: {
@@ -40,6 +43,7 @@ export default {
     stop: "Hållplats",
     line: "Linje",
     waiting_time: "Väntetid",
+    distance: "Resans längd",
   },
   expanded: {
     passing: "Passerar",

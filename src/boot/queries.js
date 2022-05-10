@@ -20,12 +20,13 @@ query SummaryPage_WalkBike_Query(
   $pageCursor: String
 )
   {
-    plan(
+    transit: plan(
       fromPlace: $fromPlace,
       toPlace: $toPlace,
       transportModes: [
-        {mode: TRANSIT},
-        {mode: WALK}
+        {mode: WALK},
+        {mode: BUS},
+        {mode: FERRY},
       ],
       date: $date,
       time: $time,
@@ -34,8 +35,136 @@ query SummaryPage_WalkBike_Query(
       wheelchair: false,
       arriveBy: $arriveBy,
       pageCursor: $pageCursor
-      walkReluctance: 4
+      walkReluctance: 8
+    ) {
+      previousPageCursor
+      nextPageCursor
+      searchWindowUsed
+      itineraries {
+        duration
+        startTime
+        endTime
+        legs {
+          startTime
+          endTime
+          route {
+            shortName
+            longName
+          }
+          mode
+          from {
+            name
+            lat
+            lon
+            stop {
+              gtfsId
+            }
+          }
+          to {
+            name
+            lat
+            lon
+            stop {
+              gtfsId
+            }
+          }
+          intermediatePlaces {
+            arrivalTime
+            stop {
+              lat
+              lon
+              name
+            }
+          }
+          mode
+          legGeometry {
+            points
+          }
+          distance
+        }
+      }
+    }
 
+  bike: plan(
+      fromPlace: $fromPlace,
+      toPlace: $toPlace,
+      transportModes: [
+        {mode: BICYCLE},
+        {mode: FERRY},
+        {mode: WALK},
+      ],
+      date: $date,
+      time: $time,
+      locale: $locale
+      maxWalkDistance: 100
+      wheelchair: false,
+      arriveBy: $arriveBy,
+      pageCursor: $pageCursor
+      walkReluctance: 8
+    ) {
+      previousPageCursor
+      nextPageCursor
+      searchWindowUsed
+      itineraries {
+        duration
+        startTime
+        endTime
+        legs {
+          startTime
+          endTime
+          route {
+            shortName
+            longName
+          }
+          mode
+          from {
+            name
+            lat
+            lon
+            stop {
+              gtfsId
+            }
+          }
+          to {
+            name
+            lat
+            lon
+            stop {
+              gtfsId
+            }
+          }
+          intermediatePlaces {
+            arrivalTime
+            stop {
+              lat
+              lon
+              name
+            }
+          }
+          mode
+          legGeometry {
+            points
+          }
+          distance
+        }
+      }
+    }
+
+    car: plan(
+      fromPlace: $fromPlace,
+      toPlace: $toPlace,
+      transportModes: [
+        {mode: CAR},
+        {mode: FERRY},
+      ],
+      date: $date,
+      time: $time,
+      locale: $locale
+      maxWalkDistance: 100
+      wheelchair: false,
+      arriveBy: $arriveBy,
+      pageCursor: $pageCursor
+      walkReluctance: 8
     ) {
       previousPageCursor
       nextPageCursor

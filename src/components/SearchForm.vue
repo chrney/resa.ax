@@ -141,7 +141,7 @@ export default defineComponent({
     const is_loaded = ref(false)
 
     const is_disabled = computed(() => {
-      return !(point.value.to && point.value.to.gtfsId && point.value.from && point.value.from.gtfsId)
+      return !(point.value.to && point.value.to.lat && point.value.from && point.value.from.lon)
     })
 
     const swapStopsFn = () => {
@@ -154,6 +154,8 @@ export default defineComponent({
     const stopChosenFn = (data) => {
       point.value[data.direction] = data.stop;
     };
+
+
     get_stops()
       .then(result => {
         allStops.value = result

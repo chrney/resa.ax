@@ -13,6 +13,8 @@ const find_trips = async (point, mode, dateModel, timeModel) => {
   let is_done = false;
   let try_counter = 0;
 
+  let new_try_counter = {};
+
   const plan_params = {
     fromPlace: [point.value.from.lat, point.value.from.lon].join(","),
     toPlace: [point.value.to.lat, point.value.to.lon].join(","),
@@ -21,6 +23,7 @@ const find_trips = async (point, mode, dateModel, timeModel) => {
     arriveBy: false,
     locale: "sv",
     pageCursor: "",
+    //searchWindow: 60 * 60 * 24 * 4,
   };
   if (mode.value !== "now") {
     plan_params.date = dateModel.value;
@@ -35,13 +38,29 @@ const find_trips = async (point, mode, dateModel, timeModel) => {
         variables: plan_params,
       })
       .then((response) => {
-        let data = response.data.data.plan;
-        if (data && data.itineraries) {
-          const new_trips = data.itineraries.map((item) =>
-            extend_trip(item, point)
-          );
-          found_trips = [...found_trips, ...new_trips];
-        }
+        ["bike", "car", "transit"].forEach((type) => {
+          let data = response.data.data[type];
+          if (data && data.itineraries) {
+            const new_trips = data.itineraries
+              .filter((item) => {
+                /* remove cars with only one leg */
+                return !(type === "car" && item.legs.length === 1);
+              })
+              .map((item) => {
+                item = extend_trip(item, point);
+                item.type = type;
+                return item;
+              });
+            found_trips = [...found_trips, ...new_trips];
+          }
+        });
+        let data = response.data.data.transit;
+        // if (data && data.itineraries) {
+        //   const new_trips = data.itineraries.map((item) =>
+        //     extend_trip(item, point)
+        //   );
+        //   found_trips = [...found_trips, ...new_trips];
+        // }
         let next_page_found = false;
         if (data.nextPageCursor && !plan_params.arriveBy) {
           plan_params.pageCursor = data.nextPageCursor;
@@ -94,6 +113,7 @@ const extend_trip = (item, point) => {
   let total_length =
     item.legs[item.legs.length - 1].endTime - item.legs[0].startTime;
 
+  let first_public_leg = null;
   item.legs.forEach((leg, idx) => {
     let newItem = {
       type: "leg",
@@ -105,11 +125,16 @@ const extend_trip = (item, point) => {
     }
 
     if (leg.from.name === "Origin") {
-      leg.from.name = point.value.from.name;
+      leg.from.name = point.value.from.formatted;
+    }
+
+    if (!first_public_leg && ["BUS", "FERRY"].includes(leg.mode)) {
+      first_public_leg = leg;
+      item.first_public_leg = leg;
     }
 
     if (leg.to.name === "Destination") {
-      leg.to.name = point.value.to.name;
+      leg.to.name = point.value.to.formatted;
     }
     newItem.percentage = (newItem.secs / total_length) * 100;
 
@@ -152,8 +177,9 @@ const extend_trip = (item, point) => {
   return item;
 };
 
-const get_stops = () => {
-  return api
+const get_stops = async () => {
+  let all_stops = null;
+  all_stops = await api
     .post("index/graphql", {
       query: all_stations,
     })
@@ -171,11 +197,47 @@ const get_stops = () => {
       return response.data.data.stations
         .map((station) => {
           station.favorite = favorites.includes(station.gtfsId);
-          return station;
+          return { ...station };
         })
         .sort((a, b) => a.name.localeCompare(b.name));
     });
+  return all_stops;
 };
+
+const geo_lookup = async (str) => {
+  let results = [];
+  str = str[0].toUpperCase() + str.slice(1);
+  await axios
+    .get("https://api.geoapify.com/v1/geocode/search", {
+      params: {
+        text: str,
+        apiKey: "ab016825a8d3435992a70ba3900326cf",
+        filter: "rect:19.0832,59.454148,21.345645,60.876637",
+        lang: "sv",
+      },
+    })
+    .then(function (response) {
+      results = response.data.features.map((item) => {
+        item.properties.favorite = false;
+        item.properties.formatted = item.properties.formatted
+          .replace(", Finland", "")
+          .replace("Maarianhamina", "Mariehamn")
+          .replace(", Åland", "")
+          .trim();
+
+        return item.properties;
+      });
+    })
+    .catch(function (error) {});
+  console.log(results);
+  results = results.filter(
+    (tag, index, array) =>
+      array.findIndex((t) => t.formatted == tag.formatted) == index
+  );
+
+  return results;
+};
+
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
@@ -184,4 +246,4 @@ export default boot(({ app }) => {
   //       so you can easily perform requests against your app's API
 });
 
-export { api, find_trips, get_stops };
+export { api, find_trips, get_stops, geo_lookup };
