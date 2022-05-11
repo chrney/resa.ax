@@ -139,8 +139,7 @@ export default defineComponent({
       // });
 
       setTimeout(create_map, 1000)
-
-
+      
     });
 
     return {
