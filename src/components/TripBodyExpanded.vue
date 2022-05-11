@@ -12,7 +12,7 @@
         leg.intermediatePlaces.length
       }}</strong
     >&nbsp;
-      {{ $t("expanded.stops_plural", leg.intermediatePlaces.length) }}
+      {{ $tc("expanded.stops_plural", leg.intermediatePlaces.length) }}
     </template>
 
     <q-timeline :color="$get_bg_class_for_mode(leg)" class="sub_timeline">
