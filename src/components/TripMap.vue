@@ -9,7 +9,7 @@
     >
       <q-card>
         <q-card-section>
-          <div :id="item.unique_id" style="height: 35vw"></div>
+          <div :id="item.unique_id" style="height: 55vw"></div>
         </q-card-section>
       </q-card>
     </q-expansion-item>
@@ -112,7 +112,7 @@ export default defineComponent({
         });
 
         //myMap.fitBounds(latlngBounds)//.setZoom(myMap.getBoundsZoom(latlngBounds))
-
+        console.log('here')
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           maxZoom: 18,
@@ -121,18 +121,24 @@ export default defineComponent({
 
       // create_map()
 
-      const observer = new MutationObserver((mutations, obs) => {
-        const mapDiv = document.getElementById(props.item.unique_id);
-        if (mapDiv) {
-          create_map()
-          obs.disconnect();
-        }
-      });
 
-      observer.observe(document, {
-        childList: true,
-        subtree: true
-      });
+      // const observer = new MutationObserver((mutations, obs) => {
+      //   const mapDiv = document.getElementById(props.item.unique_id);
+      //   console.log('observe')
+      //   if (mapDiv) {
+      //     console.log('created map')
+      //
+      //     create_map()
+      //     obs.disconnect();
+      //   }
+      // });
+      //
+      // observer.observe(document, {
+      //   childList: true,
+      //   subtree: true
+      // });
+
+      setTimeout(create_map, 1000)
 
 
     });
