@@ -1,5 +1,4 @@
 <template>
-
   <div class="q-px-lg q-pb-md">
     <q-expansion-item
       :label="$t('map.show')"
@@ -7,9 +6,10 @@
       icon="map"
       @after-show="resizeWindowFn"
     >
+
       <q-card>
         <q-card-section>
-          <div :id="item.unique_id" style="height: 55vw"></div>
+          <div :id="item.unique_id" :style="$q.screen.lt.md ? 'height: 55vw' : 'height: 35vw'"></div>
         </q-card-section>
       </q-card>
     </q-expansion-item>
@@ -17,15 +17,15 @@
 </template>
 
 <script>
-import {defineComponent, nextTick, onMounted} from "vue";
+import {defineComponent, onMounted} from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import polyUtil from "polyline-encoded";
 import {QCard, QCardSection, QExpansionItem} from "quasar";
 import {get_mode_color} from "boot/generic";
+import polyUtil from "polyline-encoded";
 
-require('leaflet.fullscreen/Control.FullScreen')
-require('leaflet.fullscreen/Control.FullScreen.css')
+require('leaflet-fullscreen/dist/Leaflet.fullscreen.min')
+require('leaflet-fullscreen/dist/leaflet.fullscreen.css')
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -55,14 +55,16 @@ export default defineComponent({
 
       const create_map = () => {
         const myMap = L.map(props.item.unique_id, {
-          center,
-          minZoom: 8,
-          zoom: 14,
-          fullscreenControl: true,
-          fullscreenControlOptions: {
-            position: 'topleft'
+
+          fullscreenControl: {
+            pseudoFullscreen: false
           }
-        });
+        }).setView(center, 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 18,
+        }).addTo(myMap);
 
         let polyline_list = [];
         let stop_list = [];
@@ -89,8 +91,10 @@ export default defineComponent({
           polyline.addTo(myMap);
         });
 
+        let markers = []
         markers_list.forEach((marker) => {
-          new L.marker(marker).addTo(myMap);
+          let m = new L.marker(marker).addTo(myMap);
+          markers.push(m)
         });
 
         stop_list.forEach((stop) => {
@@ -103,20 +107,34 @@ export default defineComponent({
           }).addTo(myMap);
         });
 
-        let latlngs = polyline_list.map((line) => line.getLatLngs());
-        let latlngBounds = L.latLngBounds(latlngs);
-        nextTick(() => {
-          myMap
-            .fitBounds(latlngBounds)
-            .setZoom(myMap.getBoundsZoom(latlngBounds));
-        });
+        let group = new L.featureGroup(markers);
+        let bounds = group.getBounds()
 
-        //myMap.fitBounds(latlngBounds)//.setZoom(myMap.getBoundsZoom(latlngBounds))
-        console.log('here')
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-          maxZoom: 18,
-        }).addTo(myMap);
+        myMap
+          .fitBounds(bounds, {maxZoom: 13})
+          .setZoom(9);
+
+
+        // myMap.flyToBounds(group.getBounds(), {
+        //   animate: true,
+        // });
+        // myMap.fitBounds(group.getBounds());
+        //
+        //
+        //
+        // let latlngs = polyline_list.map((line) => line.getLatLngs());
+        // polyline_list.forEach(line => {
+        //   line.getLatLngs().forEach(point => {
+        //     bounds.push([point.lat, point.lng])
+        //   })
+        // })
+        // let latlngBounds = L.latLngBounds(bounds);
+        // console.log(latlngBounds, myMap.getBoundsZoom(latlngBounds))
+        // myMap
+        //   .fitBounds(latlngBounds)
+        //   .setZoom(myMap.getBoundsZoom(latlngBounds));
+        // console.log(latlngBounds)
+        //   myMap.fitBounds(latlngBounds).setZoom(myMap.getBoundsZoom(latlngBounds))
       }
 
       // create_map()
@@ -137,9 +155,12 @@ export default defineComponent({
       //   childList: true,
       //   subtree: true
       // });
+      setTimeout(() => {
+        create_map();
+        resizeWindowFn()
+      }, 1000)
 
-      setTimeout(create_map, 1000)
-      
+
     });
 
     return {
