@@ -4,7 +4,7 @@
     :subtitle="$formatTS(leg.startTime, 'HH:mm')"
     :title="leg.from.name"
     class="no-walk-mode"
-  >{{ $t("body.stop") }} {{ leg.from.busStopNumber }}
+  ><!--{{ $t("body.stop") }} {{ leg.from.busStopNumber }}-->
   </q-timeline-entry>
 
   <!-- travel mode -->
@@ -28,9 +28,6 @@
     :title="leg.to.name"
     class="no-walk-mode"
   >
-    <template v-if="leg.from.name === leg.to.name">
-      {{ $t("body.stop") }} {{ leg.to.busStopNumber }}
-    </template>
   </q-timeline-entry>
 
 </template>

@@ -4,6 +4,15 @@ import { all_stations, plan_transit_walk } from "boot/queries";
 import moment from "moment";
 import { get_mode_class } from "boot/generic";
 
+const key_exists = (target, s) => {
+  s = s.split(".");
+  let obj = target[s.shift()];
+  while (obj && s.length) {
+    obj = obj[s.shift()];
+  }
+  return obj;
+};
+
 const api = axios.create({
   baseURL: "https://otp.alandstrafiken.ax/otp/routers/default/",
 });
@@ -12,8 +21,6 @@ const find_trips = async (point, mode, dateModel, timeModel) => {
   let found_trips = [];
   let is_done = false;
   let try_counter = 0;
-
-  let new_try_counter = {};
 
   const plan_params = {
     fromPlace: [point.value.from.lat, point.value.from.lon].join(","),
@@ -67,7 +74,7 @@ const find_trips = async (point, mode, dateModel, timeModel) => {
           next_page_found = true;
         }
         if (data.previousPageCursor && plan_params.arriveBy) {
-          params.pageCursor = data.previousPageCursor;
+          plan_params.pageCursor = data.previousPageCursor;
           next_page_found = true;
         }
         try_counter++;
@@ -121,7 +128,12 @@ const extend_trip = (item, point) => {
     };
     newItem.secFormated = moment.utc(newItem.secs).format("HH:mm");
     if (leg.mode === "WALK") {
-      newItem.secFormated = parseInt(newItem.secs / 60 / 1000);
+      newItem.secFormated = parseInt("" + newItem.secs / 60 / 1000);
+
+      leg.walkToOppositeBusStop =
+        key_exists(leg, "from.stop.parentStation.gtfsId") &&
+        key_exists(leg, "to.stop.parentStation.gtfsId") &&
+        leg.from.stop.parentStation.gtfsId === leg.to.stop.parentStation.gtfsId;
     }
 
     if (leg.from.name === "Origin") {
@@ -139,7 +151,7 @@ const extend_trip = (item, point) => {
     newItem.percentage = (newItem.secs / total_length) * 100;
 
     ["to", "from"].forEach((part) => {
-      if (leg[part].stop && leg[part].stop.gtfsId) {
+      if (key_exists(leg, part + ".stop.gtfsId")) {
         leg[part].busStopNumber = leg[part].stop.gtfsId.slice(-1);
       } else {
         leg[part].busStopNumber = "";
@@ -158,7 +170,7 @@ const extend_trip = (item, point) => {
         type: "pause",
         secs: item.legs[idx + 1].startTime - leg.endTime,
       };
-      pause.secFormated = parseInt(pause.secs / 60 / 1000);
+      pause.secFormated = parseInt("" + pause.secs / 60 / 1000);
 
       pause.percentage = (pause.secs * 100) / total_length;
 
@@ -178,8 +190,7 @@ const extend_trip = (item, point) => {
 };
 
 const get_stops = async () => {
-  let all_stops = null;
-  all_stops = await api
+  return await api
     .post("index/graphql", {
       query: all_stations,
     })
@@ -201,7 +212,6 @@ const get_stops = async () => {
         })
         .sort((a, b) => a.name.localeCompare(b.name));
     });
-  return all_stops;
 };
 
 const geo_lookup = async (str) => {
@@ -229,7 +239,6 @@ const geo_lookup = async (str) => {
       });
     })
     .catch(function (error) {});
-  console.log(results);
   results = results.filter(
     (tag, index, array) =>
       array.findIndex((t) => t.formatted == tag.formatted) == index

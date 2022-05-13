@@ -58,6 +58,10 @@ query SummaryPage_WalkBike_Query(
             lon
             stop {
               gtfsId
+              parentStation {
+                gtfsId
+                name
+              }
             }
           }
           to {
@@ -66,6 +70,10 @@ query SummaryPage_WalkBike_Query(
             lon
             stop {
               gtfsId
+              parentStation {
+                gtfsId
+                name
+              }
             }
           }
           intermediatePlaces {
@@ -123,6 +131,10 @@ query SummaryPage_WalkBike_Query(
             lon
             stop {
               gtfsId
+              parentStation {
+                gtfsId
+                name
+              }
             }
           }
           to {
@@ -131,6 +143,10 @@ query SummaryPage_WalkBike_Query(
             lon
             stop {
               gtfsId
+              parentStation {
+                gtfsId
+                name
+              }
             }
           }
           intermediatePlaces {
@@ -187,6 +203,10 @@ query SummaryPage_WalkBike_Query(
             lon
             stop {
               gtfsId
+              parentStation {
+                gtfsId
+                name
+              }
             }
           }
           to {
@@ -195,6 +215,10 @@ query SummaryPage_WalkBike_Query(
             lon
             stop {
               gtfsId
+              parentStation {
+                gtfsId
+                name
+              }
             }
           }
           intermediatePlaces {

@@ -46,6 +46,8 @@ export default {
     line: "Linja",
     waiting_time: "Odotusaika",
     distance: "Matkan pituus",
+
+    walk_to_opposite_bus_stop: "Vaihda vastakkaiseen pysäkkiin",
   },
   expanded: {
     passing: "Ohittaa",

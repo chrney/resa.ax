@@ -44,6 +44,8 @@ export default {
     line: "Linje",
     waiting_time: "Väntetid",
     distance: "Resans längd",
+
+    walk_to_opposite_bus_stop: "Byte till hållplats i motsatt riktning",
   },
   expanded: {
     passing: "Passerar",

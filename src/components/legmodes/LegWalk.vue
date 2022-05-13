@@ -5,22 +5,26 @@
     :icon="$mode_to_icon(leg.mode)"
     class="walk-mode"
   >
-    <template v-if="leg.to.busStopNumber !== ''">{{
-        $t("body.distance_towards_with_stop", {
-          distance: $get_distance_string(leg.distance),
-          name: leg.to.name,
-          bus_stop: leg.to.busStopNumber
-        })
-      }}
+    <template v-if="leg.walkToOppositeBusStop">
+      {{ $t("body.walk_to_opposite_bus_stop") }}
     </template>
-
-    <template v-if="leg.to.busStopNumber === ''">{{
+    <template v-if="leg.to.busStopNumber !== '' && !leg.walkToOppositeBusStop">{{
         $t("body.distance_towards_without_stop", {
           distance: $get_distance_string(leg.distance),
           name: leg.to.name
         })
       }}
     </template>
+    <!--
+
+        <template v-if="leg.to.busStopNumber === ''">{{
+            $t("body.distance_towards_without_stop", {
+              distance: $get_distance_string(leg.distance),
+              name: leg.to.name
+            })
+          }}
+        </template>
+    -->
 
   </q-timeline-entry>
 </template>

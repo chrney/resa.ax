@@ -43,6 +43,8 @@ export default {
     line: "Line",
     waiting_time: "Waiting time",
     distance: "Distance",
+
+    walk_to_opposite_bus_stop: "Walk to stop in the opposite direction",
   },
   expanded: {
     passing: "Passing",

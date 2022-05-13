@@ -47,6 +47,8 @@ export default {
     line: "Linie",
     waiting_time: "Wartezeit",
     distance: "Länge der Strecke",
+
+    walk_to_opposite_bus_stop: "Wechsel zur Haltestelle in Gegenrichtung",
   },
   expanded: {
     passing: "Fährt vorbei an",
