@@ -114,7 +114,37 @@ module.exports = configure(function (ctx) {
       // (like functional components as one of the examples),
       // you can manually specify Quasar components/directives to be available everywhere:
       //
-      // components: [],
+      autoImportComponentCase: "kebab", // or 'kebab' (default) or 'combined'
+
+      components: [
+        "QBanner",
+        "QBtn",
+        "QBtnToggle",
+        "QCard",
+        "QCardSection",
+        "QDate",
+        "QDrawer",
+        "QExpansionItem",
+        "QHeader",
+        "QIcon",
+        "QInput",
+        "QItem",
+        "QItemLabel",
+        "QItemSection",
+        "QLayout",
+        "QList",
+        "QPageContainer",
+        "QPopupProxy",
+        "QSelect",
+        "QSeparator",
+        "QSpinner",
+        "QSpinner",
+        "QTimeline",
+        "QTimelineEntry",
+        "QToolbar",
+        "QToolbarTitle",
+        "QTooltip",
+      ],
       // directives: [],
 
       // Quasar plugins

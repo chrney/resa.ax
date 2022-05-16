@@ -98,20 +98,21 @@ const extend_trip = (item, point) => {
   item.unique_id =
     "id_" + (Date.now().toString(36) + Math.random().toString(36).substr(2));
   item.duration = moment.duration(moment(item.endTime).diff(item.startTime));
+  //.humanize();
   item.search = point.value;
 
-  let duration_str = [];
-  if (item.duration.hours() > 0) {
-    duration_str.push(item.duration.hours());
-    duration_str.push("tim");
-  }
-
-  if (item.duration.minutes() > 0) {
-    duration_str.push(item.duration.minutes());
-    duration_str.push("min");
-  }
-
-  item.duration = duration_str.join(" ");
+  // let duration_str = [];
+  // if (item.duration.hours() > 0) {
+  //   duration_str.push(item.duration.hours());
+  //   duration_str.push("tim");
+  // }
+  //
+  // if (item.duration.minutes() > 0) {
+  //   duration_str.push(item.duration.minutes());
+  //   duration_str.push("min");
+  // }
+  //
+  // item.duration = duration_str.join(" ");
 
   item.from = item.legs[0].from;
   item.to = item.legs[item.legs.length - 1].to;

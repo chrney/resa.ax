@@ -9,7 +9,10 @@
       >
     </div>
     <div class="col-6 text-right text-grey">
-      {{ $t("header.duration") }}: {{ plan.duration }}
+      {{ generate_duration(plan.duration) }}
+      <!--      <template v-if="plan.duration.hours() > 0">{{ plan.duration.hours() }}</template>-->
+      <!--      <template v-if="plan.duration.minutes() > 0">{{ plan.duration.minutes() }}</template>-->
+
     </div>
 
     <div class="col-12">
@@ -94,10 +97,28 @@
 import {defineComponent} from "vue";
 import TripIcon from "components/TripIcon";
 import {QIcon, QTooltip} from "quasar"
+import {useI18n} from "vue-i18n";
 
 export default defineComponent({
   name: "TripHeader",
   props: ["plan"],
   components: {TripIcon, QTooltip, QIcon},
+  setup: () => {
+    const {t} = useI18n()
+    const generate_duration = (item) => {
+      let duration_str = [];
+      if (item.hours() > 0) {
+        duration_str.push(t("header.hours", item.hours()));
+      }
+
+      if (item.minutes() > 0) {
+        duration_str.push(t("header.minutes", item.minutes()));
+      }
+
+      return duration_str.join(" ");
+
+    }
+    return {generate_duration}
+  }
 });
 </script>

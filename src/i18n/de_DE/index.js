@@ -29,7 +29,7 @@ export default {
     line: "Linie",
     duration_hours: "{ time } Std.",
     walk: "Fussweg",
-    minutes: "Min",
+    minutes: "{n} Min",
     hours: "{ hours } Std",
     waiting_time: "Wartezeit",
     in_the_future: "In",

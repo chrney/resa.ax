@@ -69,8 +69,8 @@
 import {defineComponent} from "vue";
 import TripContent from "components/TripContent.vue";
 import TripHeader from "components/TripHeader.vue";
-import {moment} from "boot/generic";
 import {QBanner, QExpansionItem, QIcon, QList, QSpinner} from "quasar";
+//import {get_locale} from "boot/i18n";
 
 export default defineComponent({
   name: "TripList",
@@ -81,11 +81,19 @@ export default defineComponent({
     QBanner, QIcon, QSpinner, QList, QExpansionItem
   },
 
+
+  setup: () => {
+    return {
+      // get_locale
+    };
+  },
+
   computed: {
     date_groups() {
       if (this.trips.found_trips) {
         return this.trips.found_trips.reduce((group, trip) => {
-          const this_date = moment(trip.startTime).format("YYYY-MM-DD");
+          const this_date = new Date(trip.startTime).toLocaleDateString("sv-SE");
+          //const this_date = moment(trip.startTime).format("YYYY-MM-DD");
           if (!group[this_date]) {
             group[this_date] = [];
           }

@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout :key="chosenLanguage" view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
         <q-toolbar-title> Ålandstrafikens reseplanerare</q-toolbar-title>
@@ -39,8 +39,6 @@
         <router-view/>
         <span class="text-grey-6 q-mr-md">v{{ version }}</span>
       </div>
-
-
     </q-page-container>
   </q-layout>
 
@@ -65,8 +63,8 @@ import {
   QToolbarTitle,
   scroll
 } from "quasar";
-import {moment, scroll_to_results} from "boot/generic";
-import {languages} from "boot/i18n";
+import {scroll_to_results} from "boot/generic";
+import {languages, set_locale} from "boot/i18n";
 
 const {getScrollTarget, setVerticalScrollPosition} = scroll;
 export default defineComponent({
@@ -89,7 +87,10 @@ export default defineComponent({
     async changeLanguageFn(locale) {
       this.$i18n.locale = locale.key;
       this.rightDrawerOpen = false;
-      moment.locale(locale.moment_key);
+      set_locale(locale.moment_key)
+
+
+      this.chosenLanguage = locale
       await import("quasar/lang/" + locale.file).then((lang) => {
         this.$q.lang.set(lang.default);
       });
@@ -115,7 +116,8 @@ export default defineComponent({
       toggleRightDrawer() {
         rightDrawerOpen.value = !rightDrawerOpen.value;
       },
-      version: ref(__VERSION__)
+      version: ref(__VERSION__),
+      chosenLanguage: ref('')
     };
   },
 });
