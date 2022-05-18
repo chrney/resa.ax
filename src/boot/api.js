@@ -3,6 +3,8 @@ import axios from "axios";
 import { all_stations, plan_transit_walk } from "boot/queries";
 import moment from "moment";
 import { get_mode_class } from "boot/generic";
+import ports from "assets/ports";
+import favorites from "assets/favorites";
 
 const key_exists = (target, s) => {
   s = s.split(".");
@@ -196,19 +198,13 @@ const get_stops = async () => {
       query: all_stations,
     })
     .then((response) => {
-      let favorites = [
-        "AX:9021302000118000",
-        "AX:9021302000289000",
-        "AX:9021302000308000",
-        "AX:9021302000429000",
-        "AX:9021302000075000",
-        "AX:9021302001004000",
-        "AX:9021302000178000",
-        "AX:9021302001023000",
-      ];
       return response.data.data.stations
         .map((station) => {
           station.favorite = favorites.includes(station.gtfsId);
+          station.icon = ports.includes(station.gtfsId)
+            ? "directions_boat"
+            : "directions_bus";
+          station.icon_color = "primary";
           return { ...station };
         })
         .sort((a, b) => a.name.localeCompare(b.name));
@@ -219,33 +215,70 @@ const geo_lookup = async (str) => {
   let results = [];
   str = str[0].toUpperCase() + str.slice(1);
   await axios
-    .get("https://api.geoapify.com/v1/geocode/search", {
+    // .get("https://api.geoapify.com/v1/geocode/search", {
+    .get("https://otp.alandstrafiken.ax/pelias/v1/search", {
       params: {
-        text: str,
-        apiKey: "ab016825a8d3435992a70ba3900326cf",
-        filter: "rect:19.0832,59.454148,21.345645,60.876637",
-        lang: "sv",
+        text: str.trim(),
+        boundary: { country: "AX" },
+        sources: "osm,oa,gn,wof",
+        size: 25,
       },
     })
     .then(function (response) {
-      results = response.data.features.map((item) => {
-        item.properties.favorite = false;
-        item.properties.formatted = item.properties.formatted
-          .replace(", Finland", "")
-          .replace("Maarianhamina", "Mariehamn")
-          .replace(", Åland", "")
-          .trim();
+      results = response.data.features
 
-        return item.properties;
-      });
-    })
-    .catch(function (error) {});
-  results = results.filter(
+        .map((item) => {
+          item.properties.favorite = false;
+          switch (item.properties.layer) {
+            case "venue":
+              item.properties.formatted = [
+                item.properties.name,
+                item.properties.street,
+                item.properties.housenumber,
+                item.properties.locality,
+              ];
+              item.properties.icon = "house";
+              break;
+            case "address":
+              item.properties.formatted = [
+                item.properties.street,
+                item.properties.housenumber,
+                item.properties.locality,
+              ];
+              item.properties.icon = "map";
+              break;
+
+            case "locality":
+              item.properties.formatted = [item.properties.name];
+              item.properties.icon = "signpost";
+              break;
+
+            default:
+              item.properties.formatted = [item.properties.name];
+              item.properties.icon = "place";
+          }
+          item.properties.icon_color = "primary";
+
+          item.properties.formatted = item.properties.formatted
+            .join(" ")
+            .trim()
+            .replace(", Finland", "")
+            .replace("Maarianhamina", "Mariehamn")
+            .replace(", Åland", "")
+            .replace("  ", " ")
+            .trim();
+
+          item.properties.lat = item.geometry.coordinates[1];
+          item.properties.lon = item.geometry.coordinates[0];
+
+          return item.properties;
+        })
+        .filter((item) => !item.formatted.includes("Ålandstrafiken Stop"));
+    });
+  return results.filter(
     (tag, index, array) =>
       array.findIndex((t) => t.formatted == tag.formatted) == index
   );
-
-  return results;
 };
 
 export default boot(({ app }) => {

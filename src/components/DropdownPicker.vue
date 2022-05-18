@@ -7,6 +7,7 @@
     autocomplete="off"
     bg-color="white"
     class="q-mb-sm"
+    clearable
     display-value=""
     fill-input
     filled
@@ -21,6 +22,8 @@
     <template v-slot:prepend>
       <q-icon :name="icon"/>
     </template>
+
+
     <template v-slot:no-option>
       <q-item>
         <q-item-section class="text-black">
@@ -31,8 +34,9 @@
     <template v-slot:option="scope">
       <q-item v-bind="scope.itemProps">
         <q-item-section avatar>
-          <q-icon v-if="scope.opt.gtfsId" color="primary" name="where_to_vote"/>
-          <q-icon v-else color="grey-6" name="location_pin"/>
+          <q-icon :color="scope.opt.icon_color" :name="scope.opt.icon"/>
+
+          <!--          <q-icon v-else color="grey-6" name="location_pin"/>-->
         </q-item-section>
         <q-item-section>
           <q-item-label>{{ scope.opt.formatted }}</q-item-label>
@@ -116,7 +120,7 @@ export default defineComponent({
           if (val === "") {
             setOptions(defaultOptions());
           } else {
-            const needle = val.toLowerCase();
+            const needle = val.toLowerCase().trim();
             if (search_delay) {
               clearTimeout(search_delay);
             }

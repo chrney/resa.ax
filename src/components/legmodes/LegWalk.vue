@@ -15,6 +15,8 @@
         })
       }}
     </template>
+    {{ $get_distance_string(leg.distance) }}
+
     <!--
 
         <template v-if="leg.to.busStopNumber === ''">{{

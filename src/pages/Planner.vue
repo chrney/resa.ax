@@ -1,6 +1,6 @@
 <template>
   <div class="row q-col-gutter-md">
-    <div class="col-md-6 col-xs-12">
+    <div class="col-md-12 col-xs-12">
       <div class="box-background q-pa-md">
         <search-form
           @found-trips="foundTripsFn"
@@ -8,7 +8,7 @@
         />
       </div>
     </div>
-    <div class="col-md-6 col-xs-12">
+    <div class="col-md-12 col-xs-12">
       <div id="search_result" class="box-background q-pa-md">
         <trip-list :searchState="searchState" :trips="found_trips"/>
       </div>

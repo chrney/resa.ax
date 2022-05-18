@@ -2,16 +2,13 @@
   <div class="q-px-lg q-pb-md">
     <q-expansion-item
       :label="$t('map.show')"
+      class="q-ma-none q-pa-none"
       expand-separator
       icon="map"
       @after-show="resizeWindowFn"
     >
+      <div :id="item.unique_id" :style="$q.screen.lt.md ? 'height: 55vw' : 'height: 35vw'" class="q-mt-md"></div>
 
-      <q-card>
-        <q-card-section>
-          <div :id="item.unique_id" :style="$q.screen.lt.md ? 'height: 55vw' : 'height: 35vw'"></div>
-        </q-card-section>
-      </q-card>
     </q-expansion-item>
   </div>
 </template>
@@ -20,7 +17,7 @@
 import {defineComponent, onMounted} from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import {QCard, QCardSection, QExpansionItem} from "quasar";
+import {QExpansionItem} from "quasar";
 import {get_mode_color} from "boot/generic";
 import polyUtil from "polyline-encoded";
 
@@ -44,7 +41,7 @@ L.Icon.Default.mergeOptions({
 export default defineComponent({
   name: "TripMap",
   props: ["item"],
-  components: {QExpansionItem, QCard, QCardSection},
+  components: {QExpansionItem},
   setup: (props) => {
     const center = [60, 20];
     const resizeWindowFn = () => {

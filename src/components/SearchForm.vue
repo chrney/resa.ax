@@ -88,30 +88,31 @@
       </q-input>
     </div>
 
-    <q-btn
-      :disable="is_disabled"
-      :label="$t('search.btn_search')"
-      class="full-width"
-      color="primary"
-      icon="search"
-      size="xl"
-      stretch
-      @click="searchFn()"
-    />
 
-    <div class="text-center">
-      <q-btn
-        v-if="!is_disabled"
-        :disable="is_disabled"
-        :label="$t('search.btn_search_swap')"
-        class="q-mt-md"
-        color="secondary"
-        icon="import_export"
-        size="md"
-        @click="swapStopsFn"
-      ></q-btn>
+    <div class="row">
+      <div class="col-11">
+        <q-btn
+          :disable="is_disabled"
+          :label="$t('search.btn_search')"
+          :size="button_size"
+          class="full-width"
+          color="primary"
+          icon="search"
+
+          @click="searchFn()"
+        />
+      </div>
+      <div class="col-1">
+        <q-btn
+          :disable="is_disabled"
+          :size="button_size"
+          class="q-ml-md"
+          color="secondary"
+          icon="import_export"
+          @click="swapStopsFn"
+        ></q-btn>
+      </div>
     </div>
-
 
     <span class="text-grey-5">
     <!--{{ $q.screen.width }} x {{ $q.screen.height }} | {{ $q.screen.name }}-->
@@ -124,7 +125,7 @@ import {computed, defineComponent, ref} from "vue";
 import {formatTS, scroll_to_results} from "boot/generic";
 import {find_trips, get_stops} from "boot/api";
 import DropdownPicker from "components/DropdownPicker";
-import {QBtn, QBtnToggle, QDate, QIcon, QInput, QPopupProxy, QSpinner} from "quasar"
+import {QBtn, QBtnToggle, QDate, QIcon, QInput, QPopupProxy, QSpinner, useQuasar} from "quasar"
 
 export default defineComponent({
   name: "SearchForm",
@@ -132,6 +133,7 @@ export default defineComponent({
   emits: ["foundTrips", "searchState", "searchDate", "swapDropdown"],
 
   setup: (_, {emit}) => {
+    const $q = useQuasar()
     const point = ref({});
     const allStops = ref([]);
     const mode = ref("now");
@@ -142,6 +144,10 @@ export default defineComponent({
 
     const is_disabled = computed(() => {
       return !(point.value.to && point.value.to.lat && point.value.from && point.value.from.lon)
+    })
+
+    const button_size = computed(() => {
+      return $q.screen.lt.md ? 'md' : 'xl'
     })
 
     const swapStopsFn = () => {
@@ -183,7 +189,8 @@ export default defineComponent({
       dateModel,
       timeModel,
       is_disabled,
-      is_loaded
+      is_loaded,
+      button_size
     };
   },
 });

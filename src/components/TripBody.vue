@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <template>
+  <trip-map :item="item"/>
   <div class="q-px-lg q-pb-md">
-    <trip-map :item="item"/>
 
     <q-timeline
       v-for="(leg, idx) in item.graph"
