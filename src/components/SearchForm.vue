@@ -89,7 +89,7 @@
     </div>
 
 
-    <div class="row">
+    <div class="row q-col-gutter-md">
       <div class="col-9">
         <q-btn
           :disable="is_disabled"
@@ -106,7 +106,7 @@
         <q-btn
           :disable="is_disabled"
           :size="button_size"
-          class="q-ml-md"
+          class="q-ml-md full-width"
           color="secondary"
           icon="import_export"
           @click="swapStopsFn"
