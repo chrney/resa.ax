@@ -221,6 +221,7 @@ const geo_lookup = async (str) => {
         text: str.trim(),
         boundary: { country: "AX" },
         sources: "osm,oa,gn,wof",
+        layers: "venue,street,locality,address",
         size: 25,
       },
     })
