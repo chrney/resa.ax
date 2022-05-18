@@ -102,7 +102,7 @@
           @click="searchFn()"
         />
       </div>
-      <div class="3">
+      <div class="col-3">
         <q-btn
           :disable="is_disabled"
           :size="button_size"
