@@ -90,7 +90,7 @@
 
 
     <div class="row">
-      <div class="col-11">
+      <div class="col-10">
         <q-btn
           :disable="is_disabled"
           :label="$t('search.btn_search')"
@@ -102,7 +102,7 @@
           @click="searchFn()"
         />
       </div>
-      <div class="col-1">
+      <div class="col-2">
         <q-btn
           :disable="is_disabled"
           :size="button_size"
