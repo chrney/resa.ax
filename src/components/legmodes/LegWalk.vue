@@ -15,7 +15,7 @@
         })
       }}
     </template>
-    {{ $get_distance_string(leg.distance) }}
+    <template v-else>{{ $get_distance_string(leg.distance) }}</template>
 
     <!--
 
