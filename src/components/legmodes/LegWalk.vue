@@ -6,7 +6,7 @@
     class="walk-mode"
   >
     <template v-if="leg.walkToOppositeBusStop">
-      {{ $t("body.walk_to_opposite_bus_stop") }}
+      {{ $t("body.walk_to_opposite_bus_stop") }}&nbsp;
     </template>
     <template v-if="leg.to.busStopNumber !== '' && !leg.walkToOppositeBusStop">{{
         $t("body.distance_towards_without_stop", {
