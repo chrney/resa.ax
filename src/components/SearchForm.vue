@@ -9,7 +9,6 @@
     <dropdown-picker
       :data="allStops"
       :label="$t('search.label_from')"
-      :preset="point.from"
       direction="from"
       icon="start"
       @stopChosen="stopChosenFn"
@@ -17,7 +16,6 @@
     <dropdown-picker
       :data="allStops"
       :label="$t('search.label_to')"
-      :preset="point.to"
       direction="to"
       icon="start"
       @stopChosen="stopChosenFn"

@@ -32,7 +32,6 @@ const find_trips = async (point, mode, dateModel, timeModel) => {
     arriveBy: false,
     locale: "sv",
     pageCursor: "",
-    //searchWindow: 60 * 60 * 24 * 4,
   };
   if (mode.value !== "now") {
     plan_params.date = dateModel.value;
@@ -53,7 +52,14 @@ const find_trips = async (point, mode, dateModel, timeModel) => {
             const new_trips = data.itineraries
               .filter((item) => {
                 /* remove cars with only one leg */
-                return !(type === "car" && item.legs.length === 1);
+                const car_only = type === "car" && item.legs.length === 1;
+                const previously_added = found_trips.find(
+                  (trip) =>
+                    trip.duration === item.duration &&
+                    trip.startTime === item.startTime
+                );
+
+                return !car_only && !previously_added;
               })
               .map((item) => {
                 item = extend_trip(item, point);
@@ -64,12 +70,7 @@ const find_trips = async (point, mode, dateModel, timeModel) => {
           }
         });
         let data = response.data.data.transit;
-        // if (data && data.itineraries) {
-        //   const new_trips = data.itineraries.map((item) =>
-        //     extend_trip(item, point)
-        //   );
-        //   found_trips = [...found_trips, ...new_trips];
-        // }
+
         let next_page_found = false;
         if (data.nextPageCursor && !plan_params.arriveBy) {
           plan_params.pageCursor = data.nextPageCursor;
@@ -99,22 +100,8 @@ const extend_trip = (item, point) => {
 
   item.unique_id =
     "id_" + (Date.now().toString(36) + Math.random().toString(36).substr(2));
-  item.duration = moment.duration(moment(item.endTime).diff(item.startTime));
-  //.humanize();
+  item.durationObj = moment.duration(moment(item.endTime).diff(item.startTime));
   item.search = point.value;
-
-  // let duration_str = [];
-  // if (item.duration.hours() > 0) {
-  //   duration_str.push(item.duration.hours());
-  //   duration_str.push("tim");
-  // }
-  //
-  // if (item.duration.minutes() > 0) {
-  //   duration_str.push(item.duration.minutes());
-  //   duration_str.push("min");
-  // }
-  //
-  // item.duration = duration_str.join(" ");
 
   item.from = item.legs[0].from;
   item.to = item.legs[item.legs.length - 1].to;
@@ -216,7 +203,7 @@ const geo_lookup = async (str) => {
   str = str[0].toUpperCase() + str.slice(1);
   await axios
     // .get("https://api.geoapify.com/v1/geocode/search", {
-    .get("https://otp.alandstrafiken.ax/pelias/v1/search", {
+    .get("https://otp.alandstrafiken.ax/pelias/v1/autocomplete", {
       params: {
         text: str.trim(),
         boundary: { country: "AX" },

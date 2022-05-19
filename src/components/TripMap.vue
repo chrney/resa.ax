@@ -110,53 +110,12 @@ export default defineComponent({
         myMap
           .fitBounds(bounds, {maxZoom: 13})
           .setZoom(9);
-
-
-        // myMap.flyToBounds(group.getBounds(), {
-        //   animate: true,
-        // });
-        // myMap.fitBounds(group.getBounds());
-        //
-        //
-        //
-        // let latlngs = polyline_list.map((line) => line.getLatLngs());
-        // polyline_list.forEach(line => {
-        //   line.getLatLngs().forEach(point => {
-        //     bounds.push([point.lat, point.lng])
-        //   })
-        // })
-        // let latlngBounds = L.latLngBounds(bounds);
-        // console.log(latlngBounds, myMap.getBoundsZoom(latlngBounds))
-        // myMap
-        //   .fitBounds(latlngBounds)
-        //   .setZoom(myMap.getBoundsZoom(latlngBounds));
-        // console.log(latlngBounds)
-        //   myMap.fitBounds(latlngBounds).setZoom(myMap.getBoundsZoom(latlngBounds))
       }
 
-      // create_map()
-
-
-      // const observer = new MutationObserver((mutations, obs) => {
-      //   const mapDiv = document.getElementById(props.item.unique_id);
-      //   console.log('observe')
-      //   if (mapDiv) {
-      //     console.log('created map')
-      //
-      //     create_map()
-      //     obs.disconnect();
-      //   }
-      // });
-      //
-      // observer.observe(document, {
-      //   childList: true,
-      //   subtree: true
-      // });
       setTimeout(() => {
         create_map();
         resizeWindowFn()
       }, 1000)
-
 
     });
 

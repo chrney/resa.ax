@@ -16,7 +16,7 @@ export default defineComponent({
 
 <style>
 body {
-  background-image: url("assets/bg-image.jpeg");
+  background-image: url("assets/bg-image.jpg");
   background-repeat: repeat;
   background-position: center;
   background-size: auto;

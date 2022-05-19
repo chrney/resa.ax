@@ -9,7 +9,7 @@
       >
     </div>
     <div class="col-6 text-right text-grey">
-      {{ generate_duration(plan.duration) }}
+      {{ generate_duration(plan) }}
       <!--      <template v-if="plan.duration.hours() > 0">{{ plan.duration.hours() }}</template>-->
       <!--      <template v-if="plan.duration.minutes() > 0">{{ plan.duration.minutes() }}</template>-->
 
@@ -107,6 +107,7 @@ export default defineComponent({
     const {t} = useI18n()
     const generate_duration = (item) => {
       let duration_str = [];
+      item = item.durationObj
       if (item.hours() > 0) {
         duration_str.push(t("header.hours", item.hours()));
       }

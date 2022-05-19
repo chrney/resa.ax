@@ -47,14 +47,14 @@
 </template>
 
 <script>
-import {defineComponent, ref, watch} from "vue";
+import {defineComponent, ref} from "vue";
 import {QIcon, QItem, QItemSection, QSelect} from "quasar"
 import {geo_lookup} from "boot/api";
 import {useI18n} from 'vue-i18n'
 
 export default defineComponent({
   name: "DropdownPicker",
-  props: ["label", "data", "direction", "icon", "preset"],
+  props: ["label", "data", "direction", "icon"],
   components: {QSelect, QIcon, QItem, QItemSection},
   emits: ["stopChosen", "virtual-scroll"],
   setup(props, context) {
@@ -64,11 +64,6 @@ export default defineComponent({
       item.formatted = item.name
       return item
     })
-
-    watch(() => props.preset, (newValue) => {
-      model.value = newValue
-    });
-
 
     const weightedSearch = (array, weightedTests, sortProperty) => {
       return array
@@ -126,7 +121,6 @@ export default defineComponent({
             }
             search_delay = setTimeout(function () {
               geo_lookup(needle).then(result => {
-
                 let joined_list = [...result, ...all_stops]
                 if (result.length === 0) {
                   joined_list = [...all_stops]
@@ -134,6 +128,7 @@ export default defineComponent({
                 return weightedSearch(
                   joined_list,
                   [
+
                     {
                       test: function (testElement) {
                         return testElement.formatted.toLowerCase().indexOf(needle) === 0;
@@ -146,6 +141,7 @@ export default defineComponent({
                       },
                       weight: 0.5,
                     },
+
                   ],
                   "formatted"
                 )
@@ -169,7 +165,7 @@ export default defineComponent({
     const setOptions = (values) => {
       try {
         if (values.length > 0) {
-          options.value = values
+          options.value = values.sort((a, b) => Number(b.gtfsId > '') - Number(a.gtfsId > ''));
         } else { // add faked option
           options.value = [{
             formatted: t('dropdown.nothing_found'),
